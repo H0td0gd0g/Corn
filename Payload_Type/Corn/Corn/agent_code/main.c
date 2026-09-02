@@ -1,23 +1,23 @@
 #include "corn.h"
-#include "config.h"
+#include "agent_config.h"
 #include <windows.h>
 
 CONFIG_CORN corn_config = {0}; // initial
 
-int SetupConfig(void){
-    corn_config.agentID = initUUID;
-    corn_config.hostname = hostname;
-    corn_config.
-    corn_config.
-    corn_config.
-    corn_config.
-    corn_config.
-    corn_config.
-    corn_config.
-    corn_config.
+int SetupAgentConfig(void){
+    corn_config.AgentID = initUUID;
+    corn_config.HostName = hostname;
+    corn_config.HttpPort = httpport;
+    corn_config.HttpMethod = httpmethod;
+    corn_config.EndPoint = endpoint;
+    corn_config.UserAgent = useragent;
+    corn_config.IsSSL = isssl;
+    corn_config.IsProxyEnabled = proxyenabled;
+    corn_config.ProxyURL = proxyurl;
+    corn_config.SleepTime = sleeptime;
 }
 
 int main(void){
-    
+    SetupAgentConfig();
 }
 
