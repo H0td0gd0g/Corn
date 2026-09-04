@@ -1,5 +1,10 @@
 #include <windows.h>
 
+#pragma once
+
+#ifndef CORN_H
+#define CORN_H
+
 typedef struct 
 {
     PCHAR AgentID; //uuid
@@ -16,3 +21,4 @@ typedef struct
 
 extern CONFIG_CORN corn_config;
 
+#endif

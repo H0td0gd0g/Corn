@@ -1,12 +1,5 @@
 #include <windows.h>
-
-typedef struct
-{
-    PBYTE original;
-    PBYTE buffer; // メモリを読む位置
-    SIZE_T length; // 読むメモリの長さ
-    SIZE_T originalLength;
-} Parser, *PParser;
+#include "parser.h"
 
 // データに-は存在しないのでUINT32
 UINT32 getUInt32(PParser parser) {

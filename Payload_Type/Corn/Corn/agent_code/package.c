@@ -1,10 +1,6 @@
 #include <windows.h>
 #include <string.h>
-
-typedef struct {
-    PVOID buffer; // 任意の型のポインタ
-    SIZE_T length; // ポインタが指すことができる最大バイト数
-} Package, *PPackage;
+#include "package.h"
 
 BOOL addUINT32ToBuffer(PUCHAR TargetAddr, UINT32 value) {
     if (TargetAddr == NULL) return FALSE;
@@ -20,5 +16,5 @@ BOOL addUInt32(PPackage package, UINT32 value){
     return TRUE;
 }
 
-
+// TODO:UUIDをデータの先頭につける処理を実装する。addInt32以外の型を追加する。
 
