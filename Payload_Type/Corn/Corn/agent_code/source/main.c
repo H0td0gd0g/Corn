@@ -1,5 +1,5 @@
 #include "corn.h"
-#include "agent_config.h"
+#include "config.h"
 #include <windows.h>
 
 CONFIG_CORN corn_config = {0}; // initial
@@ -13,11 +13,12 @@ int SetupAgentConfig(void){
     corn_config.UserAgent = (PWCHAR)useragent;
     corn_config.IsSSL = (BOOL)isssl;
     corn_config.IsProxyEnabled = (BOOL)proxyenabled;
-    corn_config.ProxyURL = (BOOL)proxyurl;
+    corn_config.ProxyURL = (PWCHAR)proxyurl;
     corn_config.SleepTime = (UINT32)sleeptime;
 }
 
 int main(void){
     SetupAgentConfig();
+    return 0;
 }
 

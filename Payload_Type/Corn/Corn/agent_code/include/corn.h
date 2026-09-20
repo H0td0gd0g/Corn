@@ -1,9 +1,9 @@
-#include <windows.h>
-
 #pragma once
 
 #ifndef CORN_H
 #define CORN_H
+
+#include <windows.h>
 
 typedef struct 
 {
