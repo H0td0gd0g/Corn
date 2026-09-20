@@ -108,7 +108,7 @@ sendPackage (void)
         WINHTTP_NO_ADDITIONAL_HEADERS,
         0,
 
-    )
+    );
 
 
 

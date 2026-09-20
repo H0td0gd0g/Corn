@@ -13,4 +13,9 @@ typedef struct
     SIZE_T originalLength;
 } Parser, *PParser;
 
+
+UINT32 getUInt32(PParser parser);
+PBYTE  getBytes(PParser parser, PSIZE_T size);
+
+
 #endif

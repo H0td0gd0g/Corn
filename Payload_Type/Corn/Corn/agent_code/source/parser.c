@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "parser.h"
+#include "../include/parser.h"
 
 // データに-は存在しないのでUINT32
 UINT32 getUInt32(PParser parser) {
@@ -32,3 +32,9 @@ PBYTE getBytes(PParser parser, PSIZE_T size)
 
     return outData;
 }
+
+PParser newParser(){
+
+}
+
+

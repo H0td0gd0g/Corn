@@ -1,6 +1,21 @@
 #include <windows.h>
 #include <string.h>
 #include "package.h"
+#include "parser.h"
+//UUIDは36バイト固定
+BOOL addUUID(PPackage package, PCHAR uuid){
+    package->buffer = LocalReAlloc(package->buffer, package->length + 36, LMEM_MOVEABLE | LMEM_ZEROINIT);
+
+    memcpy((PUCHAR)(package->buffer) + package->length, uuid, 36);
+    package->length += 36;
+
+    return TRUE;
+}
+
+
+BOOL addChar(){
+
+}
 
 BOOL addUINT32ToBuffer(PUCHAR TargetAddr, UINT32 value) {
     if (TargetAddr == NULL) return FALSE;
@@ -17,4 +32,3 @@ BOOL addUInt32(PPackage package, UINT32 value){
 }
 
 // TODO:UUIDをデータの先頭につける処理を実装する。addInt32以外の型を追加する。
-
