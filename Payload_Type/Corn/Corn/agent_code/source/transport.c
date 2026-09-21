@@ -1,7 +1,9 @@
 // トランスポート層のhttp通信を担当
 #include <windows.h>
-#include "package.h"
+#include <string.h>
+
 #include "../include/parser.h"
+#include "../include/package.h"
 
 #include "../include/transport.h"
 
@@ -20,47 +22,27 @@ PParser sendAndRecive(PBYTE data, SIZE_T size)
     //return nullptr;
 }
 
-// http通信 Mythicはbase64を期待しているためbase64で送る関数
-PParser convertBase64(PPackage package)
-{
-    //convert base64
-    // TODO:後で自分で実装した関数に置き換える　crypt32.dllへの依存が増えるため
-    DWORD needBytes = 0;
-    
-    // 返される文字列を保持する単に割り当てる必要がある文字列を計算する。
-    CryptBinaryToStringA(
-        (const BYTE*)package->buffer,
-        (DWORD)package->length,
-        CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
-        NULL,
-        &needBytes
-    );
-    // メモリの確保
-    LPSTR outBuf = (LPSTR)LocalAlloc(
-        LPTR,
-        needBytes
-    );
-
-    CryptBinaryToStringA(
-        (const BYTE*)package->buffer,
-        (DWORD)package->length,
-        CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
-        outBuf,
-        &needBytes
-    );
+int getStatusCode(HINTERNET hRequest){
+    DWORD statusCode = 0;
+    DWORD statusSize = sizeof(DWORD);
+    if (!WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER, WINHTTP_HEADER_NAME_BY_INDEX, &statusCode, &statusSize, WINHTTP_NO_HEADER_INDEX))
+		return 0;
+	return statusCode;
 }
 
+
+
 // win32api
-sendPackage (void)
+BOOL makeHTTPRequest(PPackage package)
 {
     //WinHttpOpen
-    HINTERNET hSession;
+    HINTERNET hSession = NULL;
 
     //WinHttpConnect
-    HINTERNET hConnect;
+    HINTERNET hConnect = NULL;
 
     //WinHttpOpenRequest
-    HINTERNET hRequest;
+    HINTERNET hRequest = NULL;
 
 
     hSession = WinHttpOpen(
@@ -107,9 +89,95 @@ sendPackage (void)
         hRequest,
         WINHTTP_NO_ADDITIONAL_HEADERS,
         0,
-
+        package->buffer,
+        package->length,
+        package->length,
+        0
     );
 
+    if (request_result == FALSE){
+        return -1;
+    }else {
+        return request_result;
+    }
+
+    // 自動的に待機してくれる関数
+    if (!WinHttpReciveResponse(hRequest,NULL))
+    {
+        return NULL;
+    }
+
+    DWORD statusCode = getStatusCode(hRequest);
+
+    if (statusCode != 200){
+        return NULL;
+    }
+
+    //配列名はすでにアドレス
+    BYTE tmpBuffer[1024] = {0};
+    PVOID responseBuffer = NULL;
+
+    // 一回でダウンロードしたサイズ
+    DWORD downloadSize = 0;
+    // レスポンス全体の長さ
+    DWORD responseSize = 0;
+    //読み取ることができるサイズ(0になるとエラーか終了)
+    DWORD dwSize = 0;
+
+    do
+    {
 
 
+        if(!WinHttpQueryDataAvailable(hRequest,&dwSize)){
+            return NULL;
+        }
+
+        if(dwSize == 0) break;
+        //ローカルで動く関数なのでネットワークトラフィックは増えない
+        if (!WinHttpReadData(
+            hRequest,
+            tmpBuffer,
+            dwSize,
+            &downloadSize
+        )){
+            return NULL;
+        }
+
+        responseSize += downloadSize;
+
+        if (!responseBuffer){
+            responseBuffer = LocalAlloc(LPTR, responseSize);
+        } else {
+            // ヌル終端のため+1
+            responseBuffer = LocalReAlloc(
+                responseBuffer,
+                responseSize,
+                LMEM_MOVEABLE | LMEM_ZEROINIT
+            );
+        }
+
+        memcpy((PBYTE)responseBuffer + (responseSize - downloadSize), tmpBuffer, downloadSize);
+        memset(tmpBuffer, 0, 1024);
+
+
+    }while(dwSize > 0);
+
+    // ヌル終端のため+1
+    responseBuffer = LocalReAlloc(
+                responseBuffer,
+                responseSize + 1,
+                LMEM_MOVEABLE | LMEM_ZEROINIT
+            );
+
+
+/*
+cleanup:
+    if (hRequest) WinHttpCloseHandle(hRequest);
+    if (hConnect) WinHttpCloseHandle(hConnect);
+    if (hSession) WinHttpCloseHandle(hSession);
+    if (hSession) WinHttpCloseHandle(hSession);
+    
+    return request_result;
+
+*/
 }
