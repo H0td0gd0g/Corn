@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <string.h>
-#include "package.h"
+#include "../include/package.h"
+#include "../include/corn.h"
 #include "parser.h"
 //UUIDは36バイト固定
 BOOL addUUID(PPackage package, PCHAR uuid){
@@ -17,6 +18,7 @@ BOOL addChar(){
 
 }
 
+// UINT32
 BOOL addUINT32ToBuffer(PUCHAR TargetAddr, UINT32 value) {
     if (TargetAddr == NULL) return FALSE;
     memcpy(TargetAddr, &value, sizeof(UINT32));
@@ -31,4 +33,51 @@ BOOL addUInt32(PPackage package, UINT32 value){
     return TRUE;
 }
 
-// TODO:UUIDをデータの先頭につける処理を実装する。addInt32以外の型を追加する。
+// BYTE
+BOOL addBYTEToBuffer(PUCHAR TargetAddr, BYTE value) {
+    if (TargetAddr == NULL) return FALSE;
+    memcpy(TargetAddr, &value, sizeof(BYTE));
+    return TRUE;
+}
+
+BOOL addByte(PPackage package, BYTE value){
+    package->buffer = LocalReAlloc(package->buffer, package->length + sizeof(BYTE), LMEM_MOVEABLE | LMEM_ZEROINIT);
+    addBYTEToBuffer((PUCHAR)(package->buffer) + package->length, value);
+    package->length += sizeof(BYTE); //update buffer length
+
+    return TRUE;
+}
+
+
+// TODO:addInt32以外の型を追加する。
+
+//initはagentUUIDとtaskUUIDを含めるかどうか(TRUEだと含める)
+BOOL newPackage(BYTE taskUUID, BOOL init){
+    // 構造体のメモリを確保
+    PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
+
+    if (!Package){
+        return NULL;
+    }
+
+    // bufferのメモリを確保
+    Package->buffer = (PVOID)LocalAlloc(LPTR, sizeof(BYTE));
+
+    if (!Package->buffer){
+        return NULL;
+    }
+
+    Package->length = 0;
+
+    if(init){
+        addUUID(Package, corn_config.AgentID);
+        addByte(Package, taskUUID);
+    }
+
+    return Package;
+}
+
+VOID freePackage(PPackage package){
+    LocalFree(package->buffer);
+    LocalFree(package);
+}
