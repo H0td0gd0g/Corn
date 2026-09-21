@@ -52,7 +52,7 @@ BOOL addByte(PPackage package, BYTE value){
 // TODO:addInt32以外の型を追加する。
 
 //initはagentUUIDとtaskUUIDを含めるかどうか(TRUEだと含める)
-BOOL newPackage(BYTE taskUUID, BOOL init){
+PPackage newPackage(BYTE taskUUID, BOOL init){
     // 構造体のメモリを確保
     PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
 

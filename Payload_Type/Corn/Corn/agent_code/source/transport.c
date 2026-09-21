@@ -11,16 +11,7 @@
 #include <winhttp.h> // winhttpはワイド文字(unicode)のみサポートしているので注意が必要
 #pragma comment (lib, "winhttp.lib")
 
-// 抽象化レイヤー、どの通信にするのか選べる
-PParser sendAndRecive(PBYTE data, SIZE_T size)
-{
-    #ifdef HTTP_TRANSPORT
-        return makeHTTPRequest(data, size);
-    #endif
-    // ここにほかの通信プロトコルを配置することで動作する。
 
-    //return nullptr;
-}
 
 int getStatusCode(HINTERNET hRequest){
     DWORD statusCode = 0;
@@ -33,7 +24,7 @@ int getStatusCode(HINTERNET hRequest){
 
 
 // win32api
-BOOL makeHTTPRequest(PPackage package)
+PParser makeHTTPRequest(PBYTE data, SIZE_T size)
 {
     //WinHttpOpen
     HINTERNET hSession = NULL;
@@ -44,6 +35,8 @@ BOOL makeHTTPRequest(PPackage package)
     //WinHttpOpenRequest
     HINTERNET hRequest = NULL;
 
+
+    PParser parser = NULL;
 
     hSession = WinHttpOpen(
         L"UserAgent/1.0",
@@ -56,7 +49,7 @@ BOOL makeHTTPRequest(PPackage package)
     //errorhandling
     if (hSession == NULL)
     {
-        return -1;
+        goto cleanup;
     }
 
     hConnect = WinHttpConnect(
@@ -68,7 +61,7 @@ BOOL makeHTTPRequest(PPackage package)
 
     if (hConnect == NULL)
     {
-        return -1;
+        goto cleanup;
     }
 
     hRequest = WinHttpOpenRequest(
@@ -81,36 +74,34 @@ BOOL makeHTTPRequest(PPackage package)
         0 //httpsを使うか後で確認する
     );
 
-    if (hRequest = NULL){
-        return -1;
+    if (hRequest == NULL){
+        goto cleanup;
     }
 
     BOOL request_result = WinHttpSendRequest(
         hRequest,
         WINHTTP_NO_ADDITIONAL_HEADERS,
         0,
-        package->buffer,
-        package->length,
-        package->length,
+        data,
+        size,
+        size,
         0
     );
 
     if (request_result == FALSE){
-        return -1;
-    }else {
-        return request_result;
+        goto cleanup;
     }
 
     // 自動的に待機してくれる関数
-    if (!WinHttpReciveResponse(hRequest,NULL))
+    if (!WinHttpReceiveResponse(hRequest,NULL))
     {
-        return NULL;
+        goto cleanup;
     }
 
     DWORD statusCode = getStatusCode(hRequest);
 
     if (statusCode != 200){
-        return NULL;
+        goto cleanup;
     }
 
     //配列名はすでにアドレス
@@ -129,7 +120,7 @@ BOOL makeHTTPRequest(PPackage package)
 
 
         if(!WinHttpQueryDataAvailable(hRequest,&dwSize)){
-            return NULL;
+            goto cleanup;
         }
 
         if(dwSize == 0) break;
@@ -140,7 +131,7 @@ BOOL makeHTTPRequest(PPackage package)
             dwSize,
             &downloadSize
         )){
-            return NULL;
+            goto cleanup;
         }
 
         responseSize += downloadSize;
@@ -169,15 +160,23 @@ BOOL makeHTTPRequest(PPackage package)
                 LMEM_MOVEABLE | LMEM_ZEROINIT
             );
 
+    parser = newParser((PBYTE)responseBuffer, responseSize);
 
-/*
 cleanup:
     if (hRequest) WinHttpCloseHandle(hRequest);
     if (hConnect) WinHttpCloseHandle(hConnect);
     if (hSession) WinHttpCloseHandle(hSession);
-    if (hSession) WinHttpCloseHandle(hSession);
     
-    return request_result;
+    return parser;
+}
 
-*/
+// 抽象化レイヤー、どの通信にするのか選べる
+PParser sendAndReceive(PBYTE data, SIZE_T size)
+{
+    #ifdef HTTP_TRANSPORT
+        return makeHTTPRequest(data, size);
+    #endif
+    // ここにほかの通信プロトコルを配置することで動作する。
+
+    return NULL;
 }

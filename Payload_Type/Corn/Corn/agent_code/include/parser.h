@@ -1,9 +1,8 @@
-#include <windows.h>
-
 #pragma once
 
 #ifndef PARSER_H
 #define PARSER_H
+#include <windows.h>
 
 typedef struct
 {
@@ -16,6 +15,6 @@ typedef struct
 
 UINT32 getUInt32(PParser parser);
 PBYTE  getBytes(PParser parser, PSIZE_T size);
-
+PParser newParser(PBYTE buffer, SIZE_T size);
 
 #endif
