@@ -33,6 +33,7 @@ PBYTE getBytes(PParser parser, PSIZE_T size)
 }
 
 PParser newParser(PBYTE buffer, SIZE_T size){
+    if (!buffer) {return NULL;}
     PParser parser = (PParser)LocalAlloc(LPTR, sizeof(Parser));
 
     if (!parser){
@@ -40,19 +41,15 @@ PParser newParser(PBYTE buffer, SIZE_T size){
     }
 
     parser->original = buffer; //先頭アドレスを保持
-    parser->buffer = (PVOID)LocalAlloc(LPTR, sizeof(BYTE));
+    parser->buffer =buffer;
     parser->length = size;
     parser->originalLength = size;
-
-    if(!parser->buffer){
-        return NULL;
-    }
 
     return parser;
 }
 
 VOID freeParser(PParser parser){
-    LocalFree(parser->buffer);
+    LocalFree(parser->original);//先頭アドレス
     LocalFree(parser);
 }
 

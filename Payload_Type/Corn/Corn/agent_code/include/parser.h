@@ -16,5 +16,6 @@ typedef struct
 UINT32 getUInt32(PParser parser);
 PBYTE  getBytes(PParser parser, PSIZE_T size);
 PParser newParser(PBYTE buffer, SIZE_T size);
+VOID freeParser(PParser parser);
 
 #endif

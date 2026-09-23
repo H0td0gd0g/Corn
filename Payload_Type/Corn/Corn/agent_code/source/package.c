@@ -52,7 +52,15 @@ BOOL addByte(PPackage package, BYTE value){
 // TODO:addInt32以外の型を追加する。
 
 //initはagentUUIDとtaskUUIDを含めるかどうか(TRUEだと含める)
-PPackage newPackage(BYTE taskUUID, BOOL init){
+
+//comandID =
+/*
+#define CMD_CHECKIN     0x01
+#define CMD_GET_TASKING 0x04
+#define CMD_RESPONSE    0x05
+*/
+
+PPackage newPackage(BYTE commandID, BOOL init){
     // 構造体のメモリを確保
     PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
 
@@ -70,8 +78,8 @@ PPackage newPackage(BYTE taskUUID, BOOL init){
     Package->length = 0;
 
     if(init){
+        addByte(Package, commandID);
         addUUID(Package, corn_config.AgentID);
-        addByte(Package, taskUUID);
     }
 
     return Package;

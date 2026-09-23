@@ -11,4 +11,6 @@ typedef struct {
     SIZE_T length; // ポインタが指すことができる最大バイト数
 } Package, *PPackage;
 
+PPackage newPackage(BYTE taskiUUID, BOOL init);
+VOID freePackage(PPackage package);
 #endif

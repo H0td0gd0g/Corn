@@ -22,8 +22,6 @@ int getStatusCode(HINTERNET hRequest){
 }
 
 
-
-// win32api
 PParser makeHTTPRequest(PBYTE data, SIZE_T size)
 {
     //WinHttpOpen
@@ -35,6 +33,7 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
     //WinHttpOpenRequest
     HINTERNET hRequest = NULL;
 
+    LPSTR encoded = NULL;
 
     PParser parser = NULL;
 
@@ -78,13 +77,16 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
         goto cleanup;
     }
 
+    // TODO:b64に変換する処理を入れる
+    LPSTR encoded = encodeBase64(data, size);
+
     BOOL request_result = WinHttpSendRequest(
         hRequest,
         WINHTTP_NO_ADDITIONAL_HEADERS,
         0,
-        data,
-        size,
-        size,
+        encoded,
+        (DWORD)strlen(encoded),
+        (DWORD)strlen(encoded),
         0
     );
 
@@ -163,10 +165,11 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
     parser = newParser((PBYTE)responseBuffer, responseSize);
 
 cleanup:
+    if (encoded) LocalFree(encoded);
     if (hRequest) WinHttpCloseHandle(hRequest);
     if (hConnect) WinHttpCloseHandle(hConnect);
     if (hSession) WinHttpCloseHandle(hSession);
-    
+    // httpの結果が返ってくる
     return parser;
 }
 
