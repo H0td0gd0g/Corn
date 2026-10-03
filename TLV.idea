@@ -1,0 +1,8 @@
+Type Length Value
+形式でデータを送信する
+
+Type 1バイトで定義する
+
+Length 4バイトで定義
+
+Value 実際のデータ
