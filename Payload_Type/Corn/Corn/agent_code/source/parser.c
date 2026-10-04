@@ -9,8 +9,9 @@ UINT32 getUInt32(PParser parser) {
 
     return value;
 }
-
-PBYTE getBytes(PParser parser, PSIZE_T size)
+// 引数sizeは読み取りたいバイト数
+// 0に指定すると4バイト読む
+PBYTE getByte(PParser parser, PSIZE_T size)
 {
     SIZE_T length = 0;
     if (*size == 0) // サイズのポインタが0の場合(開始位置の場合)Mythicサーバーが期待しているエージェントから贈られるデータ量(int32)を渡すお約束
