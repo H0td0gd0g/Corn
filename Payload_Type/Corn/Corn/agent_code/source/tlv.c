@@ -11,7 +11,7 @@ PCommand tlvReadField(PBYTE buffer, SIZE_T size){
     PBYTE bodyLength = getByte(parser, &totalSize);
 
     SIZE_T uuidSize = 36;
-    PBYTE uuid = getByte(parser, &uuidSize);
+    PBYTE taskid = getByte(parser, &uuidSize);
 
 
     SIZE_T typeSize = 1;
@@ -44,6 +44,9 @@ PCommand tlvReadField(PBYTE buffer, SIZE_T size){
     return cmd;
 }
 
-BOOL tlvWriteField(){
+PBYTE tlvWriteField(
+    
+)
+{
     
 }
