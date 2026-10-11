@@ -3,8 +3,8 @@
 #include "parser.h"
 
 typedef enum {
-    TYPE_COMMAND_NAME = 0x01,
-    TYPE_COMMAND_ARGS = 0x02,
+    TYPE_COMMAND_NAME = 0x01, // shell, excute_coff, etc...
+    TYPE_COMMAND_ARGS = 0x02, // whoami, where curl...
 } TLV_TYPE;
 
 #define MAX_ARGS 8
