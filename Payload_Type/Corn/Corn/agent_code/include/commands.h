@@ -1,0 +1,1 @@
+#define CMD_SHELL 0x01
