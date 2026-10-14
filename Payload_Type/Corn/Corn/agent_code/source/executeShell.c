@@ -1,9 +1,9 @@
-#include "../include/executeCommand.h"s
+#include "../include/executeCommand.h"
 
 PBYTE executeShell(
-    _In_ PCommand cmd,
-    _Out_ PSIZE_T size,
-    _Out_ PBOOL success
+    _In_ PCommand cmd, // 実行するコマンド
+    _Out_ PSIZE_T size, // 結果のサイズ
+    _Out_ PBOOL success // 成功か失敗か
 )
 {
 
@@ -50,6 +50,7 @@ PBYTE executeShell(
 
     while (ReadFile(hRead, buf, sizeof(buf), &bytesRead, NULL) && bytesRead > 0)
     {
+    // ! メモリ確保　変数 output
     if (*size == 0)
     {
         output = (PBYTE)LocalAlloc(LMEM_FIXED, bytesRead);
