@@ -1,12 +1,9 @@
-#include "../include/executeCommand.h"
+#include "executeShell.h"
 
-PBYTE executeShell(
-    _In_ PCommand cmd, // 実行するコマンド
-    _Out_ PSIZE_T size, // 結果のサイズ
-    _Out_ PBOOL success // 成功か失敗か
+PCmdResult executeShell(
+    _In_ PCommand cmd // 実行するコマンド
 )
 {
-
     HANDLE hRead, hWrite;
     SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE};
     CreatePipe(&hRead, &hWrite, &sa, 0);
@@ -23,6 +20,8 @@ PBYTE executeShell(
     char cmdline[512];
     snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", cmd->args);
 
+    BOOL success;
+
     if(!CreateProcessA(
         NULL,
         cmdline,
@@ -37,41 +36,46 @@ PBYTE executeShell(
     )){
         CloseHandle(hRead);
         CloseHandle(hWrite);
-        *success = FALSE;
+        success = FALSE;
         return NULL;
     }
     // 親側のhWriteを閉じる
     CloseHandle(hWrite);
 
     PBYTE output = NULL;
-    *size = 0;
+    SIZE_T size = 0;
     BYTE buf[4096];
     DWORD bytesRead;
 
     while (ReadFile(hRead, buf, sizeof(buf), &bytesRead, NULL) && bytesRead > 0)
     {
     // ! メモリ確保　変数 output
-    if (*size == 0)
+    if (size == 0)
     {
         output = (PBYTE)LocalAlloc(LMEM_FIXED, bytesRead);
     }
     else
     {
-        output = (PBYTE)LocalReAlloc(output, *size + bytesRead, LMEM_MOVEABLE);
+        output = (PBYTE)LocalReAlloc(output, size + bytesRead, LMEM_MOVEABLE);
     }
-    memcpy(output + *size, buf, bytesRead);
-    *size += bytesRead;    
+    memcpy(output + size, buf, bytesRead);
+    size += bytesRead;    
     }
 
     WaitForSingleObject(pi.hProcess, INFINITE);
 
     DWORD exitCode;
     GetExitCodeProcess(pi.hProcess, &exitCode);
-    *success = (exitCode == 0) ? TRUE : FALSE;
+    success = (exitCode == 0) ? TRUE : FALSE;
+
+    PCmdResult result = (PCmdResult)LocalAlloc(LMEM_FIXED, sizeof(CmdResult));
+    result->output = output;
+    result->size = size;
+    result->success = success;
 
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     CloseHandle(hRead);
 
-    return output;
+    return result;
 }

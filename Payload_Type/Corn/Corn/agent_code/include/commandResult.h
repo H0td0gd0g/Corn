@@ -2,7 +2,7 @@
 
 typedef struct
 {
-    PBYTE result;
-    PSIZE_T size;
-    PBOOL success;
-} cmdResult, *PcmdResult;
+    PBYTE output;
+    SIZE_T size;
+    BOOL success;
+} CmdResult, *PCmdResult;
