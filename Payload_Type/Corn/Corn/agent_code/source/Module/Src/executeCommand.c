@@ -7,3 +7,7 @@ PCmdResult executeCommand(
     return result;
 }
 
+VOID freeCmdResult(PCmdResult result){
+    LocalFree(result->output);
+    LocalFree(result);
+}

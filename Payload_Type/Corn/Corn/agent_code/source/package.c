@@ -61,14 +61,14 @@ BOOL addByte(PPackage package, BYTE value){
 */
 
 PPackage newPackage(BYTE commandID, BOOL init){
-    // 構造体のメモリを確保
+    // ! メモリを確保
     PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
 
     if (!Package){
         return NULL;
     }
 
-    // bufferのメモリを確保
+    // ! メモリを確保
     Package->buffer = (PVOID)LocalAlloc(LPTR, sizeof(BYTE));
 
     if (!Package->buffer){
