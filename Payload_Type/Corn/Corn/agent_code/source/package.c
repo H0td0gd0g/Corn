@@ -48,6 +48,12 @@ BOOL addByte(PPackage package, BYTE value){
     return TRUE;
 }
 
+BOOL addBytes(PPackage package, PBYTE data, SIZE_T length){
+    package->buffer = LocalReAlloc(package->buffer, package->length + length, LMEM_MOVEABLE | LMEM_ZEROINIT);
+    memcpy((PUCHAR)(package->buffer) + package->length, data, length);
+    package->length += length;
+    return TRUE;
+}
 
 // TODO:addInt32以外の型を追加する。
 

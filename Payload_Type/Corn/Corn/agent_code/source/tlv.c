@@ -1,8 +1,7 @@
-#include "../include/tlv.h"
+#include "tlv.h"
 
 
 // ! 呼び出し先でargsのメモリを解放する必要がある。
-// TODO: アリーナアロケータに移行する。
 PCommand tlvReadField(PBYTE buffer, SIZE_T size){
     PParser parser = newParser(buffer, size);
     PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
@@ -44,9 +43,14 @@ PCommand tlvReadField(PBYTE buffer, SIZE_T size){
     return cmd;
 }
 
-PBYTE tlvWriteField(
-    
-)
+UINT32 commandID = 0;
+
+PPackage tlvWriteField(PCmdResult result)
 {
+    PPackage Package = newPackage(commandID, TRUE);
+    addByte(Package, CMD_RESULT);
+    addUInt32(Package, (UINT32)result->size);
+    addBytes(Package, result->output, result->size);
     
+    return Package;
 }

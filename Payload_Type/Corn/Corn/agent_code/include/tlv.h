@@ -1,6 +1,9 @@
 #pragma once
 #include <windows.h>
 #include "parser.h"
+#include "package.h"
+#include "commandResult.h"
+#include "cmdDef.h"
 
 typedef enum {
     TYPE_COMMAND_NAME = 0x01, // shell, excute_coff, etc...
