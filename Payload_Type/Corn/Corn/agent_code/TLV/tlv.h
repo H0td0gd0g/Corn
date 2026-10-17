@@ -21,3 +21,6 @@ typedef struct
     SIZE_T argsSize[MAX_ARGS];
     PBYTE args[MAX_ARGS];
 } Command, *PCommand;
+
+PCommand tlvReadField(PParser parser);
+PPackage tlvWriteField(PPackage package, PCmdResult result);

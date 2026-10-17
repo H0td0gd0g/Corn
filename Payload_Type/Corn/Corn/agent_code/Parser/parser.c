@@ -1,4 +1,4 @@
-#include "../include/parser.h"
+#include "parser.h"
 
 // データに-は存在しないのでUINT32
 UINT32 getUInt32(PParser parser) {

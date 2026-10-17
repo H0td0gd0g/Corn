@@ -50,7 +50,7 @@ PCommand tlvReadField(PParser parser){
 }
 
 
-BOOL freePCommand(PCommand cmd){
+BOOL freeCommand(PCommand cmd){
     if (cmd == NULL) return FALSE;
     BYTE count = cmd->argCount;
     for(BYTE i = 0; i < count; i++){
@@ -65,12 +65,28 @@ BOOL freePCommand(PCommand cmd){
 
 UINT32 commandID = 0;
 
-PPackage tlvWriteField(PCmdResult result)
+VOID tlvWriteField(PPackage package, PCmdResult result)
 {
-    PPackage Package = newPackage(commandID, TRUE);
-    addByte(Package, CMD_RESULT);
-    addUInt32(Package, (UINT32)result->size);
-    addBytes(Package, result->output, result->size);
-    
-    return Package;
+    addByte(package, CMD_RESULT);
+    addUUID(); //cmd uuid  NO! agentUUID
+    addByte(package, result->success); // true or false
+    addUInt32(package, (UINT32)result->size);
+    addBytes(package, result->output, result->size);
 }
+
+/*
+
+
+agent uuid (fast time)
+
+cmd result
+
+cmd uuid
+
+cmd success true or false ?
+
+value size
+
+value
+
+*/

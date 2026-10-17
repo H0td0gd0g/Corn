@@ -1,14 +1,14 @@
 #include <windows.h>
 #include <string.h>
-#include "../include/package.h"
-#include "../include/corn.h"
+#include "package.h"
+#include "corn.h"
 #include "parser.h"
 //UUIDは36バイト固定
 BOOL addUUID(PPackage package, PCHAR uuid){
-    package->buffer = LocalReAlloc(package->buffer, package->length + 36, LMEM_MOVEABLE | LMEM_ZEROINIT);
+    package->buffer = LocalReAlloc(package->buffer, package->size + 36, LMEM_MOVEABLE | LMEM_ZEROINIT);
 
-    memcpy((PUCHAR)(package->buffer) + package->length, uuid, 36);
-    package->length += 36;
+    memcpy((PUCHAR)(package->buffer) + package->size, uuid, 36);
+    package->size += 36;
 
     return TRUE;
 }
@@ -26,9 +26,9 @@ BOOL addUINT32ToBuffer(PUCHAR TargetAddr, UINT32 value) {
 }
 
 BOOL addUInt32(PPackage package, UINT32 value){
-    package->buffer = LocalReAlloc(package->buffer, package->length + sizeof(UINT32), LMEM_MOVEABLE | LMEM_ZEROINIT);
-    addUINT32ToBuffer((PUCHAR)(package->buffer) + package->length, value);
-    package->length += sizeof(UINT32); //update buffer length
+    package->buffer = LocalReAlloc(package->buffer, package->size + sizeof(UINT32), LMEM_MOVEABLE | LMEM_ZEROINIT);
+    addUINT32ToBuffer((PUCHAR)(package->buffer) + package->size, value);
+    package->size += sizeof(UINT32); //update buffer length
 
     return TRUE;
 }
@@ -41,17 +41,17 @@ BOOL addBYTEToBuffer(PUCHAR TargetAddr, BYTE value) {
 }
 
 BOOL addByte(PPackage package, BYTE value){
-    package->buffer = LocalReAlloc(package->buffer, package->length + sizeof(BYTE), LMEM_MOVEABLE | LMEM_ZEROINIT);
-    addBYTEToBuffer((PUCHAR)(package->buffer) + package->length, value);
-    package->length += sizeof(BYTE); //update buffer length
+    package->buffer = LocalReAlloc(package->buffer, package->size + sizeof(BYTE), LMEM_MOVEABLE | LMEM_ZEROINIT);
+    addBYTEToBuffer((PUCHAR)(package->buffer) + package->size, value);
+    package->size += sizeof(BYTE); //update buffer length
 
     return TRUE;
 }
 
 BOOL addBytes(PPackage package, PBYTE data, SIZE_T length){
-    package->buffer = LocalReAlloc(package->buffer, package->length + length, LMEM_MOVEABLE | LMEM_ZEROINIT);
-    memcpy((PUCHAR)(package->buffer) + package->length, data, length);
-    package->length += length;
+    package->buffer = LocalReAlloc(package->buffer, package->size + length, LMEM_MOVEABLE | LMEM_ZEROINIT);
+    memcpy((PUCHAR)(package->buffer) + package->size, data, length);
+    package->size += length;
     return TRUE;
 }
 
@@ -66,9 +66,9 @@ BOOL addBytes(PPackage package, PBYTE data, SIZE_T length){
 #define CMD_RESPONSE    0x05
 */
 
-PPackage newPackage(BYTE commandID, BOOL init){
+PPackage newPackage(BOOL init){
     // ! メモリを確保
-    PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
+    PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(*Package));
 
     if (!Package){
         return NULL;
@@ -81,11 +81,10 @@ PPackage newPackage(BYTE commandID, BOOL init){
         return NULL;
     }
 
-    Package->length = 0;
+    Package->size = 0;
 
     if(init){
-        addByte(Package, commandID);
-        addUUID(Package, corn_config.AgentID);
+        addUUID(Package, corn_config.AgentID); // agent uuid
     }
 
     return Package;

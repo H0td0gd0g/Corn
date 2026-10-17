@@ -3,12 +3,17 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/Corn/Corn/agent_code/include"
+                "${workspaceFolder}/Corn/Corn/agent_code/Module/include",
+                "${workspaceFolder}/Corn/Corn/agent_code/Parser",
+                "${workspaceFolder}/Corn/Corn/agent_code/Package",
+                "${workspaceFolder}/Corn/Corn/agent_code/Config",
+                "${workspaceFolder}/Corn/Corn/agent_code/TLV",
+                "/usr/x86_64-w64-mingw32/include"
             ],
             "defines": [],
-            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "compilerPath": "/usr/bin/x86_64-w64-mingw32-gcc",
             "cStandard": "c17",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

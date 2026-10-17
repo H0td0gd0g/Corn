@@ -2,7 +2,8 @@
 
 typedef struct
 {
+    CHAR commandUUID[36];
+    BOOL success;
     PBYTE output;
     SIZE_T size;
-    BOOL success;
 } CmdResult, *PCmdResult;
