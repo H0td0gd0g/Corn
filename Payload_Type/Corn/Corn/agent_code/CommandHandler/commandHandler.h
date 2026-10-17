@@ -3,3 +3,5 @@
 #include "cmdDef.h"
 #include "executeCommand.h"
 #include "commandResult.h"
+
+BOOL dispatchCommand(PCommand cmd);

@@ -13,14 +13,9 @@ BYTE getTaskCount(
 }
 
 
-/*
-tlvreadfieldをparserを受け取ってそのバイト数だけ読むようにしよう
-今のままなら1コマンドしか実行できない
-
-*/
-
-
 // utlv ?? uuid + type length value
+
+// ! freePCommand関数で使用後にメモリを解放する。
 PCommand tlvReadField(PParser parser){
     PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
 
@@ -45,7 +40,7 @@ PCommand tlvReadField(PParser parser){
 
         PSIZE_T valueSize = (PSIZE_T)getByte(parser, &szValueSize);
         cmd->argsSize[i] = *valueSize;
-        LoclaFree(valueSize);
+        LocalFree(valueSize);
 
         PBYTE args = getByte(parser, valueSize);
         cmd->args[i] = args;
@@ -66,10 +61,6 @@ BOOL freePCommand(PCommand cmd){
     return TRUE;
 }
 
-
-
-
-// ! 呼び出し先でargsのメモリを解放する必要がある。
 
 
 UINT32 commandID = 0;

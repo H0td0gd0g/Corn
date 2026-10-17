@@ -23,18 +23,23 @@ int main(void){
     sendChekin();
 
 
+    sleep(10);
+
     // command roop
     while(TRUE){
 
+        PParser parser = sendAndReceive();
+        BYTE taskCount = getTaskCount(parser);
+
+
+        for(BYTE i = 0; i < taskCount; i++){
+            PCommand cmd = tlvReadField(parser);
+            PCmdResult result = dispatchCommand(cmd);
+        }
+
+        sleep(10);
     }
 
-
-    PParser parser = sendAndReceive();
-    BYTE taskCount = getTaskCount(parser);
-
-    for(BYTE i = 0; i < taskCount; i++){
-        // tlvReadField(parser)
-    }
 
 
 

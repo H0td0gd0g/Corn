@@ -3,4 +3,6 @@
 #include "config.h"
 #include "transport.h"
 #include "checkin.h"
+#include "commandHandler.h"
+
 
