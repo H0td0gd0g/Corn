@@ -1,6 +1,5 @@
-#include "corn.h"
-#include "config.h"
-#include <windows.h>
+#include "main.h"
+
 
 CONFIG_CORN corn_config = {0}; // initial
 
@@ -19,6 +18,36 @@ int SetupAgentConfig(void){
 
 int main(void){
     SetupAgentConfig();
+
+    // prototype
+    sendChekin();
+
+
+    // command roop
+    while(TRUE){
+
+    }
+
+
+    PParser parser = sendAndReceive();
+    BYTE taskCount = getTaskCount(parser);
+
+    for(BYTE i = 0; i < taskCount; i++){
+        // tlvReadField(parser)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     return 0;
 }
 

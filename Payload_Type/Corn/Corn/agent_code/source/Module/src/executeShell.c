@@ -18,7 +18,7 @@ PCmdResult executeShell(
     PROCESS_INFORMATION pi = { 0 };
 
     char cmdline[512];
-    snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", cmd->args);
+    snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", (PCHAR)cmd->args);
 
     BOOL success;
 

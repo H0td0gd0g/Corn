@@ -1,47 +1,76 @@
 #include "tlv.h"
 
 
-// ! 呼び出し先でargsのメモリを解放する必要がある。
-PCommand tlvReadField(PBYTE buffer, SIZE_T size){
-    PParser parser = newParser(buffer, size);
-    PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
+BYTE getTaskCount(
+    _In_ PParser parser
+    )
+    {
+    PBYTE PTaskCount = getByte(parser, 1); // マジックナンバーなので後で修正する(タスク数は1バイトでくる)
+    BYTE taskCount = *PTaskCount;
+    LocalFree(PTaskCount);
     
-    SIZE_T totalSize = 0;
-    PBYTE bodyLength = getByte(parser, &totalSize);
-
-    SIZE_T uuidSize = 36;
-    PBYTE taskid = getByte(parser, &uuidSize);
+    return taskCount;
+}
 
 
-    SIZE_T typeSize = 1;
-    SIZE_T lengthSize = 4;
+/*
+tlvreadfieldをparserを受け取ってそのバイト数だけ読むようにしよう
+今のままなら1コマンドしか実行できない
+
+*/
 
 
-    while(parser->length > 0){
-        PBYTE type = getByte(parser, &typeSize);
-        PBYTE length = getByte(parser, &lengthSize);
+// utlv ?? uuid + type length value
+PCommand tlvReadField(PParser parser){
+    PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
 
-        SIZE_T valueLength = (SIZE_T)(*(UINT32*)length);
-        PBYTE value = getByte(parser, &valueLength);
+    SIZE_T uuid = 36;
+    SIZE_T szArgCount = 1;
+    SIZE_T cmdType = 1; // 1byte
+    SIZE_T szValueSize = 4;
 
-        switch (*type)
-        {
-            case TYPE_COMMAND_NAME:
-                cmd->commandID = *value;
-                LocalFree(value);
-                break;
-            case TYPE_COMMAND_ARGS:
-                cmd->args[cmd->argCount] = value;
-                cmd->argsSize[cmd->argCount] = valueLength;
-                cmd->argCount++;
-                break;
-        }
+    PCHAR cmdUUID = (PCHAR)getByte(parser, &uuid);
+    memcpy(cmd->commandUUID, cmdUUID, 36);
+    LocalFree(cmdUUID);
 
-        LocalFree(type);
-        LocalFree(length);
-    }
+    PBYTE argcount = getByte(parser, &szArgCount);
+    cmd->argCount = *argcount;
+    LocalFree(argcount);
+    
+
+    for (BYTE i = 0; i < cmd->argCount; i++){
+        PBYTE cmdtype = getByte(parser, &cmdType);
+        cmd->commandType[i] = *cmdtype;
+        LocalFree(cmdtype);
+
+        PSIZE_T valueSize = (PSIZE_T)getByte(parser, &szValueSize);
+        cmd->argsSize[i] = *valueSize;
+        LoclaFree(valueSize);
+
+        PBYTE args = getByte(parser, valueSize);
+        cmd->args[i] = args;
+    }    
+
     return cmd;
 }
+
+
+BOOL freePCommand(PCommand cmd){
+    if (cmd == NULL) return FALSE;
+    BYTE count = cmd->argCount;
+    for(BYTE i = 0; i < count; i++){
+        LocalFree(cmd->args[i]);
+    }
+    LocalFree(cmd);
+
+    return TRUE;
+}
+
+
+
+
+// ! 呼び出し先でargsのメモリを解放する必要がある。
+
 
 UINT32 commandID = 0;
 

@@ -1,7 +1,7 @@
-#include "../include/commandHandler.h"
+#include "commandHandler.h"
 
 BOOL dispatchCommand(PCommand cmd){
-    switch (cmd->commandID){
+    switch (cmd->commandType[0]){
         case 0x01:
             PCmdResult result = executeCommand();
             // ! メモリ解放　(executeShell.c)
