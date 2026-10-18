@@ -1,4 +1,4 @@
-#include "../include/checkin.h"
+#include "checkin.h"
 
 // TODO:commandIDをtranlaterと一致させる。
 
@@ -9,19 +9,18 @@
 #define CMD_RESPONSE    0x05
 */
 
-BYTE checkinID = 0x01;
 
-BOOL sendCheckin(VOID){
-    PPackage checkin = newPackage(checkinID, TRUE);
+PParser sendCheckin(){
+    PPackage Checkin = newPackage(TRUE, checkin);
 
-    PParser response = sendAndReceive((PBYTE)checkin->buffer, checkin->length);
-    //TODO responseを解析してuuidが返ってくるはずまだ作ってない
-    freePackage(checkin);
+    PParser response = sendAndReceive(Checkin->buffer, Checkin->size);
+
+    freePackage(Checkin);
 
     if(!response){
-        return FALSE;
+        return NULL;
     }
 
-    freeParser(response);
-    return TRUE;    
+    return response;
 }
+

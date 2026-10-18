@@ -7,7 +7,8 @@
 
 typedef struct 
 {
-    PCHAR AgentID; //uuid
+    PCHAR AgentID; // コンパイル時に設定されるuuid どのバイナリか判定する
+    PCHAR callBackuuid; // チェックイン後に返されるuuid
     PWCHAR HostName;
     DWORD HttpPort;
     PWCHAR EndPoint;

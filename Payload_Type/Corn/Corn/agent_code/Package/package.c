@@ -59,38 +59,47 @@ BOOL addBytes(PPackage package, PBYTE data, SIZE_T length){
 
 //initはagentUUIDとtaskUUIDを含めるかどうか(TRUEだと含める)
 
-//comandID =
 /*
 #define CMD_CHECKIN     0x01
-#define CMD_GET_TASKING 0x04
-#define CMD_RESPONSE    0x05
+#define CMD_GET_TASKING 0x02
 */
 
-PPackage newPackage(BOOL init){
+PPackage newPackage(BOOL init, BYTE action){
+    // @param action checkin or tasking ex.) 0x01
     // ! メモリを確保
-    PPackage Package = (PPackage)LocalAlloc(LPTR, sizeof(*Package));
+    PPackage package = (PPackage)LocalAlloc(LPTR, sizeof(Package));
 
-    if (!Package){
+    if (!package){
         return NULL;
     }
 
     // ! メモリを確保
-    Package->buffer = (PVOID)LocalAlloc(LPTR, sizeof(BYTE));
+    package->buffer = (PVOID)LocalAlloc(LPTR, sizeof(BYTE));
 
-    if (!Package->buffer){
+    if (!package->buffer){
         return NULL;
     }
 
-    Package->size = 0;
+    package->size = 0;
+
+    addByte(package, action);
 
     if(init){
-        addUUID(Package, corn_config.AgentID); // agent uuid
+        addUUID(package, corn_config.AgentID); // agent uuid
     }
 
-    return Package;
+    return package;
 }
 
 VOID freePackage(PPackage package){
     LocalFree(package->buffer);
     LocalFree(package);
 }
+
+/*
+Package Byte order
+
+action (1byte)
+
+callbackuuid (36byte)
+*/

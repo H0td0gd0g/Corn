@@ -17,10 +17,10 @@ typedef struct
     // ! UUIDはすくなくともBYTEではない
     CHAR commandUUID; // コマンドごとのUUID
     BYTE argCount; // コマンドの引数の数
-    BYTE commandType[MAX_ARGS]; // コマンドの種類 
+    PBYTE commandType; // コマンドの種類 
     SIZE_T argsSize[MAX_ARGS];
     PBYTE args[MAX_ARGS];
 } Command, *PCommand;
 
 PCommand tlvReadField(PParser parser);
-PPackage tlvWriteField(PPackage package, PCmdResult result);
+VOID tlvWriteField(PPackage package, PCmdResult result);

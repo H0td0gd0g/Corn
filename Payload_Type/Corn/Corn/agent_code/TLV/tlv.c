@@ -1,6 +1,6 @@
 #include "tlv.h"
 
-
+// 何個のコマンドが入っているか確認
 BYTE getTaskCount(
     _In_ PParser parser
     )
@@ -13,9 +13,8 @@ BYTE getTaskCount(
 }
 
 
-// utlv ?? uuid + type length value
-
-// ! freePCommand関数で使用後にメモリを解放する。
+// 一つのコマンドバイナリデータを解析する関数
+// ! freeCommand関数で使用後にメモリを解放する。
 PCommand tlvReadField(PParser parser){
     PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
 
@@ -24,14 +23,13 @@ PCommand tlvReadField(PParser parser){
     SIZE_T cmdType = 1; // 1byte
     SIZE_T szValueSize = 4;
 
-    PCHAR cmdUUID = (PCHAR)getByte(parser, &uuid);
-    memcpy(cmd->commandUUID, cmdUUID, 36);
-    LocalFree(cmdUUID);
+    PCHAR taskUUID = (PCHAR)getByte(parser, &uuid);
+    memcpy(cmd->commandUUID, taskUUID, 36);
+    LocalFree(taskUUID);
 
     PBYTE argcount = getByte(parser, &szArgCount);
     cmd->argCount = *argcount;
     LocalFree(argcount);
-    
 
     for (BYTE i = 0; i < cmd->argCount; i++){
         PBYTE cmdtype = getByte(parser, &cmdType);
