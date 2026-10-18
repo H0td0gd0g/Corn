@@ -9,8 +9,15 @@
 #define CMD_RESPONSE    0x05
 */
 
+BOOL setupCallbackuuid(PCommand cmd, PCONFIG_CORN corn){
+    
+    memcpy(corn->callBackuuid, cmd->args[0], 36);
 
-PParser sendCheckin(){
+    return TRUE;
+}
+
+
+BOOL sendCheckin(PCONFIG_CORN corn){
     PPackage Checkin = newPackage(TRUE, checkin);
 
     PParser response = sendAndReceive(Checkin->buffer, Checkin->size);
@@ -18,9 +25,15 @@ PParser sendCheckin(){
     freePackage(Checkin);
 
     if(!response){
-        return NULL;
+        return FALSE;
     }
 
-    return response;
+    PCommand cmd = tlvReadField(response);
+    setupCallbackuuid(cmd, corn);
+
+    freeParser(response);
+    freeCommand(cmd);
+
+    return TRUE;
 }
 

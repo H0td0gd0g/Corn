@@ -7,16 +7,16 @@
 
 typedef struct 
 {
-    PCHAR AgentID; // コンパイル時に設定されるuuid どのバイナリか判定する
-    PCHAR callBackuuid; // チェックイン後に返されるuuid
-    PWCHAR HostName;
+    CHAR AgentID[36]; // コンパイル時に設定されるuuid どのバイナリか判定する。
+    CHAR callBackuuid[36]; // チェックイン後に返されるuuid
+    WCHAR HostName;
     DWORD HttpPort;
-    PWCHAR EndPoint;
-    PWCHAR HttpMethod;
-    PWCHAR UserAgent;
+    WCHAR EndPoint;
+    WCHAR HttpMethod;
+    WCHAR UserAgent;
     BOOL IsSSL;
     BOOL IsProxyEnabled;
-    PWCHAR ProxyURL;
+    WCHAR ProxyURL;
     UINT32 SleepTime;
 } CONFIG_CORN, *PCONFIG_CORN;
 

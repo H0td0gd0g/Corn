@@ -4,5 +4,6 @@
 #include "transport.h"
 #include "action.h"
 #include "tlv.h"
+#include "corn.h"
 
-PCmdResult setupCallbackuuid(PCommand cmd);
+BOOL setupCallbackuuid(PCommand cmd, PCONFIG_CORN corn);

@@ -24,3 +24,4 @@ typedef struct
 
 PCommand tlvReadField(PParser parser);
 VOID tlvWriteField(PPackage package, PCmdResult result);
+BOOL freeCommand(PCommand cmd)

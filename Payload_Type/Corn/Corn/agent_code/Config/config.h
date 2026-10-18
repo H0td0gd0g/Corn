@@ -4,7 +4,6 @@
 #define httpmethod L"POST"
 #define endpoint L"data"
 #define useragent L"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0"
-#define useragent L""
 #define isssl FALSE
 #define proxyenabled FALSE
 #define proxyurl L""
