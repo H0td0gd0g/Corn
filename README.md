@@ -48,7 +48,7 @@ The following block repeats `taskCount` times:
 
 ### Mythic -> Corn agent(callback response)
 
-Fixed header (37 bytes):
+Fixed header (1 bytes):
 
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
