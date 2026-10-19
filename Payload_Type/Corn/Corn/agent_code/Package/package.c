@@ -7,7 +7,7 @@
 BOOL addUUID(PPackage package, PCHAR uuid){
     package->buffer = LocalReAlloc(package->buffer, package->size + 36, LMEM_MOVEABLE | LMEM_ZEROINIT);
 
-    memcpy((PUCHAR)(package->buffer) + package->size, uuid, 36);
+    memcpy((PBYTE)(package->buffer) + package->size, uuid, 36);
     package->size += 36;
 
     return TRUE;

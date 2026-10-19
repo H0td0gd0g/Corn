@@ -53,6 +53,15 @@ int main(void){
         PCommand cmd = tlvReadField(parser);
         PCmdResult result = dispatchCommand(cmd);
 
+        // === setup package ===
+
+        if(i == 0){
+          // callbackuuidを追加
+          addUUID(prevResults, &corn_config.callBackuuid);
+          // 返送するタスク数を追加
+          addByte(prevResults, taskCount);
+        }
+
         tlvWriteField(prevResults, result);
 
         freePCommand(cmd);
