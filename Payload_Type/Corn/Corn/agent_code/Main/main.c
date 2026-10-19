@@ -56,17 +56,16 @@ int main(void){
         // === setup package ===
 
         if(i == 0){
-          // callbackuuidを追加
-          addUUID(prevResults, &corn_config.callBackuuid);
           // 返送するタスク数を追加
           addByte(prevResults, taskCount);
         }
-
+        // 実行結果を追加
         tlvWriteField(prevResults, result);
 
         freePCommand(cmd);
         freeCmdResult(result);
         }
+
         freeParser(parser);
 
         Sleep(corn_config.SleepTime);

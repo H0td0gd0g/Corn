@@ -57,7 +57,10 @@ BOOL addBytes(PPackage package, PBYTE data, SIZE_T length){
 
 // TODO:addInt32以外の型を追加する。
 
-//initはagentUUIDとtaskUUIDを含めるかどうか(TRUEだと含める)
+//initはagentUUIDかtaskUUIDのどちらかを含めるかどうか(TRUEだと含める)
+// TODO actionによってagent uuidと callbackuuidを変える
+
+
 
 /*
 #define CMD_CHECKIN     0x01
@@ -82,11 +85,15 @@ PPackage newPackage(BOOL init, BYTE action){
 
     package->size = 0;
 
-    addByte(package, action);
-
     // TODO コールバックuuidに更新する
     if(init){
-        addUUID(package, corn_config.AgentID); // agent uuid
+        switch(action){
+            case checkin:
+                addUUID(package, corn_config.AgentID);
+            case get_tasking:
+                addUUID(package, corn_config.callBackuuid);
+        }
+        addByte(package, action);
     }
 
     return package;

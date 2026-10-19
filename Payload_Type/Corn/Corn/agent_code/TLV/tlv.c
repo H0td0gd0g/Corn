@@ -42,7 +42,7 @@ PCommand tlvReadField(PParser parser){
         PBYTE args = getByte(parser, valueSize);
         cmd->args[i] = args;
 
-        LocalFree(valueSize);
+                LocalFree(valueSize);
     }    
 
     return cmd;
@@ -61,31 +61,11 @@ BOOL freeCommand(PCommand cmd){
 }
 
 
-
-UINT32 commandID = 0;
-
-PBYTE tlvWriteField(PPackage package, PCmdResult result)
+PPackage tlvWriteField(PPackage package, PCmdResult result)
 {
-    addByte(package, CMD_RESULT);
-    addUUID(); //cmd uuid  NO! agentUUID
+    addUUID(package, result->commandUUID); //cmd uuid  NO! agentUUID
     addByte(package, result->success); // true or false
     addUInt32(package, (UINT32)result->size);
-    addBytes(package, result->output, result->size);
+    addBytes(package, result->output, result->size); // result value
 }
 
-/*
-
-
-agent uuid (fast time)
-
-cmd result
-
-cmd uuid
-
-cmd success true or false ?
-
-value size
-
-value
-
-*/
