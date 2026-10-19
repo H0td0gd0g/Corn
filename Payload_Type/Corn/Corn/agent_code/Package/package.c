@@ -84,6 +84,7 @@ PPackage newPackage(BOOL init, BYTE action){
 
     addByte(package, action);
 
+    // TODO コールバックuuidに更新する
     if(init){
         addUUID(package, corn_config.AgentID); // agent uuid
     }

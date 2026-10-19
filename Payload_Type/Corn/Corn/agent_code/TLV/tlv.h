@@ -15,13 +15,13 @@ typedef enum {
 typedef struct
 {
     // ! UUIDはすくなくともBYTEではない
-    CHAR commandUUID; // コマンドごとのUUID
+    CHAR commandUUID[36]; // コマンドごとのUUID
     BYTE argCount; // コマンドの引数の数
-    PBYTE commandType; // コマンドの種類 
+    BYTE commandType[MAX_ARGS]; // コマンドの種類 
     SIZE_T argsSize[MAX_ARGS];
     PBYTE args[MAX_ARGS];
 } Command, *PCommand;
 
 PCommand tlvReadField(PParser parser);
-VOID tlvWriteField(PPackage package, PCmdResult result);
-BOOL freeCommand(PCommand cmd)
+PBYTE tlvWriteField(PPackage package, PCmdResult result);
+BOOL freeCommand(PCommand cmd);

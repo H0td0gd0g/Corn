@@ -38,10 +38,11 @@ PCommand tlvReadField(PParser parser){
 
         PSIZE_T valueSize = (PSIZE_T)getByte(parser, &szValueSize);
         cmd->argsSize[i] = *valueSize;
-        LocalFree(valueSize);
 
         PBYTE args = getByte(parser, valueSize);
         cmd->args[i] = args;
+
+        LocalFree(valueSize);
     }    
 
     return cmd;
@@ -63,7 +64,7 @@ BOOL freeCommand(PCommand cmd){
 
 UINT32 commandID = 0;
 
-VOID tlvWriteField(PPackage package, PCmdResult result)
+PBYTE tlvWriteField(PPackage package, PCmdResult result)
 {
     addByte(package, CMD_RESULT);
     addUUID(); //cmd uuid  NO! agentUUID

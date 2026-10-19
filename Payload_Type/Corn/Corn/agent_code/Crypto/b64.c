@@ -1,4 +1,4 @@
-#include "../include/b64.h"
+#include "b64.h"
 
 PBYTE encodeBase64(
     _In_ PBYTE data, 

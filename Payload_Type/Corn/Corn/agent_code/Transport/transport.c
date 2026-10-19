@@ -78,7 +78,9 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
     }
 
     // TODO:b64に変換する処理を入れる
-    LPSTR encoded = encodeBase64(data, size);
+    SIZE_T outputsize;
+
+    encoded = encodeBase64(data, size, &outputsize);
 
     BOOL request_result = WinHttpSendRequest(
         hRequest,
