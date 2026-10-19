@@ -12,11 +12,11 @@ Corn is a lightweight implant for the [Mythic C2 framework](https://github.com/i
 
 ### Corn Agent -> Mythic(checkin)
 
-Fixed header (38 bytes) followed by `taskCount` task blocks.
+Fixed header (37 bytes)
 
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
-| `AgentUUID` | 0 | 36 | `CHAR[36]` | Callback identifier (UUID v4) |
+| `AgentUUID` | 0 | 36 | `CHAR[36]` | Agent identifier (UUID v4) |
 | `action` | 36 | 1 | `BYTE` | checkin = 0x01 or get_tasking = 0x02 |
 
 ### Corn Agent -> Mythic(callback)
@@ -41,7 +41,33 @@ The following block repeats `taskCount` times:
 
 ### Mythic -> Corn agent(checkin response)
 
+| Field | Offset | Size | Type | Description |
+|---|---|---|---|---|
+| `scuccess` | 0 | 1 | `BYTE` | TRUE = 0x01, FALSE = 0x00 |
+| `action` | 36 | 1 | `BYTE` | checkin = 0x01 or get_tasking = 0x02 |
+
 ### Mythic -> Corn agent(callback response)
+
+Fixed header (37 bytes):
+
+| Field | Offset | Size | Type | Description |
+|---|---|---|---|---|
+| `taskCount` | 0 | 1 | `BYTE` | Number of tasks |
+
+The following task block repeats `taskCount` times:
+
+| Field | Size | Type | Description |
+|---|---|---|---|
+| `taskUUID` | 1 | 36 | `CHAR[36]` | Task identifier (UUID v4) |
+| `argCount` | 1 | `BYTE` | Number of arguments |
+
+The following arg block repeats `argCount` times:
+
+| Field | Size | Type | Description |
+|---|---|---|---|
+| `commandType` | 1 | `BYTE` | Argument type |
+| `size` | 4 | `SIZE_T` | Byte length of `value` |
+| `value` | n | `BYTE[]` | Variable-length payload |
 
 
 
