@@ -90,8 +90,10 @@ PPackage newPackage(BOOL init, BYTE action){
         switch(action){
             case checkin:
                 addUUID(package, corn_config.AgentID);
+                break;
             case get_tasking:
                 addUUID(package, corn_config.callBackuuid);
+                break;
         }
         addByte(package, action);
     }

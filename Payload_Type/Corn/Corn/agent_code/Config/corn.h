@@ -9,14 +9,14 @@ typedef struct
 {
     CHAR AgentID[36]; // コンパイル時に設定されるuuid どのバイナリか判定する。
     CHAR callBackuuid[36]; // チェックイン後に返されるuuid
-    WCHAR HostName;
+    PWCHAR HostName;
     DWORD HttpPort;
-    WCHAR EndPoint;
-    WCHAR HttpMethod;
-    WCHAR UserAgent;
+    PWCHAR EndPoint;
+    PWCHAR HttpMethod;
+    PWCHAR UserAgent;
     BOOL IsSSL;
     BOOL IsProxyEnabled;
-    WCHAR ProxyURL;
+    PWCHAR ProxyURL;
     UINT32 SleepTime;
 } CONFIG_CORN, *PCONFIG_CORN;
 

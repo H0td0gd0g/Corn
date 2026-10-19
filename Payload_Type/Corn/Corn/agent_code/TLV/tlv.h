@@ -23,5 +23,5 @@ typedef struct
 } Command, *PCommand;
 
 PCommand tlvReadField(PParser parser);
-PBYTE tlvWriteField(PPackage package, PCmdResult result);
+BOOL tlvWriteField(PPackage package, PCmdResult result);
 BOOL freeCommand(PCommand cmd);

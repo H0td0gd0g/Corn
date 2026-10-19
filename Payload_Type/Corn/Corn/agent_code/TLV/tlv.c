@@ -5,7 +5,8 @@ BYTE getTaskCount(
     _In_ PParser parser
     )
     {
-    PBYTE PTaskCount = getByte(parser, 1); // マジックナンバーなので後で修正する(タスク数は1バイトでくる)
+    SIZE_T szTaskCount = 1;
+    PBYTE PTaskCount = getByte(parser, &szTaskCount); // マジックナンバーなので後で修正する(タスク数は1バイトでくる)
     BYTE taskCount = *PTaskCount;
     LocalFree(PTaskCount);
     
@@ -36,13 +37,14 @@ PCommand tlvReadField(PParser parser){
         cmd->commandType[i] = *cmdtype;
         LocalFree(cmdtype);
 
-        PSIZE_T valueSize = (PSIZE_T)getByte(parser, &szValueSize);
-        cmd->argsSize[i] = *valueSize;
+        PBYTE rawSize = getByte(parser, &szValueSize);
+        SIZE_T valueSize = (SIZE_T)(*(UINT32*)rawSize); 
+        LocalFree(rawSize);
+        cmd->argsSize[i] = valueSize;
 
-        PBYTE args = getByte(parser, valueSize);
+        PBYTE args = getByte(parser, &valueSize);
         cmd->args[i] = args;
 
-                LocalFree(valueSize);
     }    
 
     return cmd;
@@ -61,11 +63,13 @@ BOOL freeCommand(PCommand cmd){
 }
 
 
-PPackage tlvWriteField(PPackage package, PCmdResult result)
+BOOL tlvWriteField(PPackage package, PCmdResult result)
 {
     addUUID(package, result->commandUUID); //cmd uuid  NO! agentUUID
     addByte(package, result->success); // true or false
     addUInt32(package, (UINT32)result->size);
     addBytes(package, result->output, result->size); // result value
+
+    return TRUE;
 }
 

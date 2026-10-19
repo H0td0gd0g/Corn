@@ -5,14 +5,14 @@ CONFIG_CORN corn_config = {0}; // initial
 
 int setupAgentConfig(void){
     memcpy(corn_config.AgentID, initUUID, 36);
-    corn_config.HostName = (WCHAR)hostname;
+    corn_config.HostName = hostname;
     corn_config.HttpPort = (DWORD)httpport;
-    corn_config.HttpMethod = (WCHAR)httpmethod;
-    corn_config.EndPoint = (WCHAR)endpoint;
-    corn_config.UserAgent = (WCHAR)useragent;
+    corn_config.HttpMethod = httpmethod;
+    corn_config.EndPoint = endpoint;
+    corn_config.UserAgent = useragent;
     corn_config.IsSSL = (BOOL)isssl;
     corn_config.IsProxyEnabled = (BOOL)proxyenabled;
-    corn_config.ProxyURL = (WCHAR)proxyurl;
+    corn_config.ProxyURL = proxyurl;
     corn_config.SleepTime = (UINT32)sleeptime;
 }
 
@@ -62,7 +62,7 @@ int main(void){
         // 実行結果を追加
         tlvWriteField(prevResults, result);
 
-        freePCommand(cmd);
+        freeCommand(cmd);
         freeCmdResult(result);
         }
 
