@@ -44,7 +44,7 @@ The following block repeats `taskCount` times:
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
 | `scuccess` | 0 | 1 | `BYTE` | TRUE = 0x01, FALSE = 0x00 |
-| `action` | 36 | 1 | `BYTE` | checkin = 0x01 or get_tasking = 0x02 |
+| `callBackUUID` | 1 | 36 | `` |  |
 
 ### Mythic -> Corn agent(callback response)
 
@@ -68,6 +68,12 @@ The following arg block repeats `argCount` times:
 | `commandType` | 1 | `BYTE` | Argument type |
 | `size` | 4 | `SIZE_T` | Byte length of `value` |
 | `value` | n | `BYTE[]` | Variable-length payload |
+
+
+## Hint
+
+- `callBackUUID` — UUID returned by Mythic upon successful checkin. Used in all subsequent communications.
+- `agentUUID` — UUID embedded in the payload at build time. Used only during checkin to verify the agent is a legitimate Mythic-generated payload.
 
 ## Notice
 
