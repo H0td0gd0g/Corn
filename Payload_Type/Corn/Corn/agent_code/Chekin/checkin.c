@@ -9,30 +9,35 @@
 #define CMD_RESPONSE    0x05
 */
 
-BOOL setupCallbackuuid(PCommand cmd, PCONFIG_CORN corn){
-    
-    memcpy(corn->callBackuuid, cmd->args[0], 36);
-
-    return TRUE;
-}
-
 
 BOOL sendCheckin(PCONFIG_CORN corn){
+    // ! メモリを確保
     PPackage Checkin = newPackage(TRUE, checkin);
 
+    // ! メモリ確保
     PParser response = sendAndReceive(Checkin->buffer, Checkin->size);
 
+    // ! Packageメモリ解放
     freePackage(Checkin);
 
     if(!response){
         return FALSE;
     }
 
-    PCommand cmd = tlvReadField(response);
-    setupCallbackuuid(cmd, corn);
+    SIZE_T szSuccess = 1;
+    SIZE_T szCallBackUUID = 36;
 
+    if(getByte(response, &szSuccess) == 0x00){
+        // ! エラー時にメモリ解放
+        freeParser(response);
+        return FALSE;
+    }
+
+    CHAR callBackUUID[36] = (CHAR)getByte(response, &szCallBackUUID);
+    memcpy(corn->callBackuuid, callBackUUID, 36);
+    
+    // ! メモリ解放
     freeParser(response);
-    freeCommand(cmd);
 
     return TRUE;
 }

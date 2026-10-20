@@ -6,4 +6,4 @@
 #include "tlv.h"
 #include "corn.h"
 
-BOOL setupCallbackuuid(PCommand cmd, PCONFIG_CORN corn);
+BOOL sendCheckin(PCONFIG_CORN corn);
