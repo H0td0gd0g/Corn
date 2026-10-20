@@ -13,7 +13,7 @@ typedef struct
     DWORD HttpPort;
     PWCHAR EndPoint;
     PWCHAR HttpMethod;
-    PWCHAR UserAgent;
+    LPCWSTR UserAgent;
     BOOL IsSSL;
     BOOL IsProxyEnabled;
     PWCHAR ProxyURL;

@@ -38,7 +38,7 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
     PParser parser = NULL;
 
     hSession = WinHttpOpen(
-        L"UserAgent/1.0",
+        corn_config.UserAgent,
         WINHTTP_ACCESS_TYPE_NO_PROXY,
         WINHTTP_NO_PROXY_NAME,
         WINHTTP_NO_PROXY_BYPASS,
@@ -81,6 +81,7 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
     SIZE_T outputsize;
 
     encoded = encodeBase64(data, size, &outputsize);
+    if(!encoded) goto cleanup;
 
     BOOL request_result = WinHttpSendRequest(
         hRequest,
@@ -128,11 +129,13 @@ PParser makeHTTPRequest(PBYTE data, SIZE_T size)
         }
 
         if(dwSize == 0) break;
+        DWORD readSize = (dwSize < sizeof(tmpBuffer)) ? dwSize : sizeof(tmpBuffer);
+
         //ローカルで動く関数なのでネットワークトラフィックは増えない
         if (!WinHttpReadData(
             hRequest,
             tmpBuffer,
-            dwSize,
+            readSize,
             &downloadSize
         )){
             goto cleanup;

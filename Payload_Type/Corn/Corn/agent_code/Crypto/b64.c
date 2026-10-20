@@ -44,6 +44,10 @@ PBYTE encodeBase64(
     _In_  SIZE_T  input_size,
     _Out_ PSIZE_T out_size)
     {
+        if (input_size == 0) {
+            *out_size = 0;
+            return LocalAlloc(LPTR, 1);
+        }
         // 逆引きテーブル（ASCII値 → 0〜63）
         static int decode_table[256];
         static BOOL tableInit = FALSE;

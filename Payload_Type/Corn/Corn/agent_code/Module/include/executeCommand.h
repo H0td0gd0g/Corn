@@ -2,6 +2,6 @@
 #include "commandResult.h"
 #include "tlv.h"
 
-PBYTE executeShell(
+PCmdResult executeShell(
     _In_ PCommand cmd
 );

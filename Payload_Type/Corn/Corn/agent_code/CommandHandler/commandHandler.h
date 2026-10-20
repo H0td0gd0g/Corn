@@ -5,4 +5,4 @@
 #include "commandResult.h"
 #include "checkin.h"
 
-BOOL dispatchCommand(PCommand cmd);
+PCmdResult dispatchCommand(PCommand cmd);

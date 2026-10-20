@@ -1,7 +1,7 @@
 #include "executeShell.h"
 
 PCmdResult executeShell(
-    _In_ PCommand cmd // 実行するコマンド
+    _In_ PCommand cmd // 実行するコマンド構造体
 )
 {
     HANDLE hRead, hWrite;
@@ -18,7 +18,13 @@ PCmdResult executeShell(
     PROCESS_INFORMATION pi = { 0 };
 
     char cmdline[512];
-    snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", (PCHAR)cmd->args[0]);
+    for (BYTE i = 0; i < cmd->argCount; i++) {
+    if (cmd->commandType[i] == TYPE_COMMAND_ARGS) {
+        snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", (PCHAR)cmd->args[i]);
+        break;
+        }
+    }
+
 
     BOOL success;
 
@@ -68,7 +74,8 @@ PCmdResult executeShell(
     GetExitCodeProcess(pi.hProcess, &exitCode);
     success = (exitCode == 0) ? TRUE : FALSE;
 
-    PCmdResult result = (PCmdResult)LocalAlloc(LMEM_FIXED, sizeof(CmdResult));
+    PCmdResult result = (PCmdResult)LocalAlloc(LPTR, sizeof(CmdResult));
+    memcpy(result->commandUUID, cmd->commandUUID, 36);
     result->output = output;
     result->size = size;
     result->success = success;

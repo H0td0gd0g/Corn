@@ -24,12 +24,13 @@ int main(void){
     }
 
     // first sleep zzz...
+    // milliseconds 1000 milli = 1 second
     Sleep(corn_config.SleepTime);
-
 
     PPackage prevResults = NULL;
     // command loop
     while(TRUE){
+        // ! メモリ確保
         PPackage package = newPackage(TRUE, get_tasking);
 
         if(prevResults != NULL){
@@ -41,6 +42,7 @@ int main(void){
         PParser parser = sendAndReceive(package->buffer, package->size);
         freePackage(package);
 
+        // sendAndRecive error check
         if(parser == NULL){
         Sleep(corn_config.SleepTime);
         continue;
@@ -52,9 +54,7 @@ int main(void){
         for(BYTE i = 0; i < taskCount; i++){
         PCommand cmd = tlvReadField(parser);
         PCmdResult result = dispatchCommand(cmd);
-
         // === setup package ===
-
         if(i == 0){
           // 返送するタスク数を追加
           addByte(prevResults, taskCount);
