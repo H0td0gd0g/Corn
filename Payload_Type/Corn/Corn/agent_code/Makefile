@@ -1,15 +1,34 @@
-CXX     := x86_64-w64-mingw32-gcc
-BUILD   := ./build
-INCLUDE := -I include
-SRC     := source/*.c main.c
+TARGET_EXEC := corn.exe
 
-CFLAGS  := -lwinhttp -lws2_32
+CC := x86_64-w64-mingw32-gcc
+BUILD_DIR := ./build
+SRC_DIRS := ./agent_code
 
-all: exe
+SRCS := $(shell find $(SRC_DIRS) -name '*.c')
+OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
-exe:
-	mkdir -p $(BUILD)
-	$(CXX) $(INCLUDE) $(SRC) $(CFLAGS) -o $(BUILD)/corn.exe
+DEPS := $(OBJS:.o=.d)
 
+INC_DIRS := $(shell find $(SRC_DIRS) -type d)
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+
+CPPFLAGS := $(INC_FLAGS) -MMD -MP
+
+$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
+    $(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+$(BUILD_DIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
 clean:
-	rm -rf $(BUILD)
+	rm -r $(BUILD_DIR)
+
+-include $(DEPS)
+
+
+
+
+
+
