@@ -1,7 +1,9 @@
+#pragma once
+
 #include <windows.h>
 #include "commandResult.h"
 #include "tlv.h"
+#include "executeShell.h"
 
-PCmdResult executeShell(
-    _In_ PCommand cmd
-);
+PCmdResult executeCommand(_In_ PCommand cmd);
+VOID freeCmdResult(PCmdResult result);

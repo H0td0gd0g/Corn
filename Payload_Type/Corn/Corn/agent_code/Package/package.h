@@ -10,6 +10,7 @@ typedef struct {
     SIZE_T size; // bufferのサイズ
 } Package, *PPackage;
 
+BOOL addUUID(PPackage package, PCHAR uuid);
 BOOL addBytes(PPackage package, PBYTE data, SIZE_T length);
 BOOL addByte(PPackage package, BYTE value);
 BOOL addUInt32(PPackage package, UINT32 value);

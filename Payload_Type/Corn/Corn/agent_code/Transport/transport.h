@@ -1,3 +1,5 @@
+#pragma once
+
 #include "corn.h"
 #include "parser.h"
 #include "b64.h"

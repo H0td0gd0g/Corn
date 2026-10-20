@@ -1,3 +1,5 @@
+#pragma once
+
 #define initUUID "3d39a1b4-413e-4015-8690-f311c024a867"
 #define hostname L"192.168.137.131"
 #define httpport 80

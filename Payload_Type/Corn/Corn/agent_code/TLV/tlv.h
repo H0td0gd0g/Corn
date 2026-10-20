@@ -22,6 +22,7 @@ typedef struct
     PBYTE args[MAX_ARGS];
 } Command, *PCommand;
 
+BYTE getTaskCount(_In_ PParser parser);
 PCommand tlvReadField(PParser parser);
 BOOL tlvWriteField(PPackage package, PCmdResult result);
 BOOL freeCommand(PCommand cmd);

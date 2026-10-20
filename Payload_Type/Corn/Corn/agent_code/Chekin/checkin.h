@@ -1,3 +1,5 @@
+#pragma once
+
 #include <windows.h>
 #include "package.h"
 #include "corn.h"

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <windows.h>
 #include "tlv.h"
 #include "cmdDef.h"

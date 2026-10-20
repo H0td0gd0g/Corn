@@ -2,7 +2,7 @@ TARGET_EXEC := corn.exe
 
 CC := x86_64-w64-mingw32-gcc
 BUILD_DIR := ./build
-SRC_DIRS := ./agent_code
+SRC_DIRS := .
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -13,9 +13,10 @@ INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
+LDFLAGS := -lwinhttp
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-    $(CC) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
