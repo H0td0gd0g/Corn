@@ -9,4 +9,7 @@
 #include "tlv.h"
 #include "commandResult.h"
 #include "executeCommand.h"
+#include "executeCommandResult.h"
+#include "parser.h"
+#include "string.h"
 

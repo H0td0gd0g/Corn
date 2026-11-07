@@ -58,7 +58,7 @@ int main(void){
         if(i == 0){
           // 返送するタスク数を追加
           addByte(prevResults, taskCount);
-        }
+          }
         // 実行結果を追加
         tlvWriteField(prevResults, result);
 

@@ -24,9 +24,9 @@ PCommand tlvReadField(PParser parser){
     SIZE_T cmdType = 1; // 1byte
     SIZE_T szValueSize = 4;
 
-    PCHAR taskUUID = (PCHAR)getByte(parser, &uuid);
-    memcpy(cmd->commandUUID, taskUUID, 36);
-    LocalFree(taskUUID);
+    PCHAR cmdUUID = (PCHAR)getByte(parser, &uuid);
+    memcpy(cmd->commandUUID, cmdUUID, 36);
+    LocalFree(cmdUUID);
 
     PBYTE argcount = getByte(parser, &szArgCount);
     cmd->argCount = *argcount;

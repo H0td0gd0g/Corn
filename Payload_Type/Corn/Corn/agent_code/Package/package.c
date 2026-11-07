@@ -85,7 +85,6 @@ PPackage newPackage(BOOL init, BYTE action){
 
     package->size = 0;
 
-    // TODO コールバックuuidに更新する
     if(init){
         switch(action){
             case checkin:
