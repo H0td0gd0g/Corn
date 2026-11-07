@@ -33,7 +33,7 @@ The following block repeats `taskCount` times:
 
 | Field | Size | Type | Description |
 |---|---|---|---|
-| `commandType` | 1 | `BYTE` | Command type |
+| `taskUUID` | 36 | `BYTE[]` | taskUUID |
 | `success` | 1 | `BYTE` | `0x01` = TRUE, `0x00` = FALSE |
 | `size` | 4 | `SIZE_T` | Byte length of `value` |
 | `value` | n | `BYTE[]` | Variable-length payload |
@@ -74,6 +74,7 @@ The following arg block repeats `argCount` times:
 
 - `agentUUID` — UUID embedded in the payload at build time. Used only during checkin to verify the agent is a legitimate Mythic-generated payload.
 - `callBackUUID` — UUID returned by Mythic upon successful checkin. Used in all subsequent communications.
+- `taskUUID` - A UUID is assigned to each task; Mythic uses this to determine which task a given result belongs to.
 
 ## Notice
 
