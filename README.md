@@ -16,7 +16,7 @@ Fixed header (37 bytes)
 
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
-| `AgentUUID` | 0 | 36 | `CHAR[36]` | Agent identifier (UUID v4) |
+| `AgentUUID` | 0 | 36 | `CHAR[36]` | Agent identifier UUID |
 | `action` | 36 | 1 | `BYTE` | checkin = 0x01 or get_tasking = 0x02 |
 
 ### Corn Agent -> Mythic(callback)
@@ -25,7 +25,7 @@ Fixed header (38 bytes) followed by `taskCount` task blocks.
 
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
-| `callBackUUID` | 0 | 36 | `CHAR[36]` | Callback identifier (UUID v4) |
+| `callBackUUID` | 0 | 36 | `CHAR[36]` | Callback UUID  |
 | `action` | 36 | 1 | `BYTE` | checkin = 0x01 or get_tasking = 0x02 |
 | `taskCount` | 37 | 1 | `BYTE` | Number of following task blocks |
 
@@ -43,8 +43,8 @@ The following block repeats `taskCount` times:
 
 | Field | Offset | Size | Type | Description |
 |---|---|---|---|---|
-| `scuccess` | 0 | 1 | `BYTE` | TRUE = 0x01, FALSE = 0x00 |
-| `callBackUUID` | 1 | 36 | `` |  |
+| `success` | 0 | 1 | `BYTE` | TRUE = 0x01, FALSE = 0x00 |
+| `callBackUUID` | 1 | 36 | `BYTE[]` | Callback UUID |
 
 ### Mythic -> Corn agent(callback response)
 
@@ -58,7 +58,7 @@ The following task block repeats `taskCount` times:
 
 | Field | Size | Type | Description |
 |---|---|---|---|
-| `taskUUID` | 1 | 36 | `CHAR[36]` | Task identifier (UUID v4) |
+| `taskUUID` | 36 | `CHAR[36]` | Task identifier (UUID v4) |
 | `argCount` | 1 | `BYTE` | Number of arguments |
 
 The following arg block repeats `argCount` times:
@@ -72,8 +72,8 @@ The following arg block repeats `argCount` times:
 
 ## Hint
 
-- `callBackUUID` — UUID returned by Mythic upon successful checkin. Used in all subsequent communications.
 - `agentUUID` — UUID embedded in the payload at build time. Used only during checkin to verify the agent is a legitimate Mythic-generated payload.
+- `callBackUUID` — UUID returned by Mythic upon successful checkin. Used in all subsequent communications.
 
 ## Notice
 
@@ -89,7 +89,14 @@ The following arg block repeats `argCount` times:
 3. Execute on target
 4. Callback appears in Mythic UI
 
-Disclaimer
+## References
+
+This project was inspired by and built with reference to the following:
+
+- [ceos](https://github.com/Red-Team-SNCF/ceos)
+- [Xenon](https://github.com/MythicAgents/Xenon)
+
+## Disclaimer
 
 This project is intended for educational purposes and authorized security research only.
 
