@@ -5,8 +5,9 @@
 // === http section ===
 #define hostname L"%HOSTNAME%"
 #define httpport "%PORT%"
-#define httpmethod L"POST"
 #define endpoint L"%ENDPOINT%"
+#define httpmethod L"%METHOD%"
+
 #define useragent L"%USERAGENT%"
 #define isssl "%SSL%"
 
