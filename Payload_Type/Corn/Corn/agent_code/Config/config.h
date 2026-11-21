@@ -12,4 +12,6 @@
 
 #define proxyenabled "%PROXYENABLED%"
 #define proxyurl L"%PROXYURL"
+
+
 #define sleeptime "%SLEEPTIME%"

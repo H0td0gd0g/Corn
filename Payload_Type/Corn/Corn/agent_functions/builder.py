@@ -95,18 +95,18 @@ class CornAgent(PayloadType):
         ))
         with open(agent_build_path.name+"/ceos/include/Config.h", "r+") as f:
             content = f.read()
-            content = content.replace("%UUID%", Config["payload_uuid"])
-            content = content.replace("%HOSTNAME%", Config["callback_host"])
-            content = content.replace("%ENDPOINT%", Config["post_uri"])
-            if Config["ssl"]:
+            content = content.replace("%UUID%", config["payload_uuid"])
+            content = content.replace("%HOSTNAME%", config["callback_host"])
+            content = content.replace("%ENDPOINT%", config["post_uri"])
+            if config["ssl"]:
                 content = content.replace("%SSL%", "TRUE")
             else:
                 content = content.replace("%SSL%", "FALSE")
-                content = content.replace("%PORT%", str(Config["callback_port"]))
-                content = content.replace("%SLEEPTIME%", str(Config["callback_interval"]))
-                content = content.replace("%USERAGENT%", Config["USER_AGENT"])
-                content = content.replace("%PROXYURL%", Config["proxy_host"])
-            if Config["proxyEnabled"]:
+                content = content.replace("%PORT%", str(config["callback_port"]))
+                content = content.replace("%SLEEPTIME%", str(config["callback_interval"]))
+                content = content.replace("%USERAGENT%", config["USER_AGENT"])
+                content = content.replace("%PROXYURL%", config["proxy_host"])
+            if config["proxyEnabled"]:
                 content = content.replace("%PROXYENABLED%", "TRUE")
             else:
                 content = content.replace("%PROXYENABLED%", "FALSE")
