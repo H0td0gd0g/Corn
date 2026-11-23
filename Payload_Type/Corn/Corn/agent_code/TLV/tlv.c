@@ -20,6 +20,7 @@ PCommand tlvReadField(PParser parser){
     PCommand cmd = (PCommand)LocalAlloc(LPTR, sizeof(Command));
 
     SIZE_T uuid = 36;
+    SIZE_T szCommandType = 1;
     SIZE_T szArgCount = 1;
     SIZE_T cmdType = 1; // 1byte
     SIZE_T szValueSize = 4;
@@ -28,15 +29,15 @@ PCommand tlvReadField(PParser parser){
     memcpy(cmd->commandUUID, taskUUID, 36);
     LocalFree(taskUUID);
 
+    PBYTE commandType = getByte(parser, &szCommandType);
+    cmd->commandType = *commandType;
+    LocalFree(commandType);
+
     PBYTE argcount = getByte(parser, &szArgCount);
     cmd->argCount = *argcount;
     LocalFree(argcount);
 
     for (BYTE i = 0; i < cmd->argCount; i++){
-        PBYTE cmdtype = getByte(parser, &cmdType);
-        cmd->commandType[i] = *cmdtype;
-        LocalFree(cmdtype);
-
         PBYTE rawSize = getByte(parser, &szValueSize);
         SIZE_T valueSize = (SIZE_T)(*(UINT32*)rawSize); 
         LocalFree(rawSize);
@@ -44,9 +45,8 @@ PCommand tlvReadField(PParser parser){
 
         PBYTE args = getByte(parser, &valueSize);
         cmd->args[i] = args;
-
-    }    
-
+        LocalFree(args);
+    }
     return cmd;
 }
 

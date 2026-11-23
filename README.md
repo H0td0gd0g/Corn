@@ -59,13 +59,13 @@ The following task block repeats `taskCount` times:
 | Field | Size | Type | Description |
 |---|---|---|---|
 | `taskUUID` | 36 | `CHAR[36]` | Task identifier (UUID v4) |
+| `commandType` | 1 | `BYTE` | commandType (e.g. execute_shell 0x54) |
 | `argCount` | 1 | `BYTE` | Number of arguments |
 
 The following arg block repeats `argCount` times:
 
 | Field | Size | Type | Description |
 |---|---|---|---|
-| `commandType` | 1 | `BYTE` | Argument type |
 | `size` | 4 | `SIZE_T` | Byte length of `value` |
 | `value` | n | `BYTE[]` | Variable-length payload |
 

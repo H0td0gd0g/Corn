@@ -1,10 +1,10 @@
 #include "commandHandler.h"
 
 PCmdResult dispatchCommand(PCommand cmd){
-    switch (cmd->commandType[0]){
+    switch (cmd->commandType){
         default:
             return NULL;
-        case 0x01:
+        case 0x54:
             PCmdResult result = executeCommand(cmd);
             // ! メモリ解放　(executeShell.c)
             // TODO タスクループで解放させる

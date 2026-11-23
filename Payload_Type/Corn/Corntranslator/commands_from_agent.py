@@ -40,6 +40,3 @@ def main(data) -> dict:
             datajson = get_tasking(uuid, data)
     
     return datajson
-
-
-def postResponse(data):
