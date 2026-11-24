@@ -5,7 +5,7 @@ ACTION_GET_TASKING = b"\x02"
 
 # Command type
 
-execute_shell = b"\x05"
+execute_shell = b"\x54"
 
 # bool
 

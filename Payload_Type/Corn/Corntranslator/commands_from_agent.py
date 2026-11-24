@@ -27,7 +27,7 @@ def get_tasking(uuid, data) -> dict:
     
     return datajson
 
-def main(data) -> dict:
+def dispatchAction(data) -> dict:
     uuid = data[:36]
     data = data[36:]
     
