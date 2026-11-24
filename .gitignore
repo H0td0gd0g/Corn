@@ -4,3 +4,4 @@ main
 .idea
 mythic_go_services.bin
 rabbitmq_config.json
+.vscode
