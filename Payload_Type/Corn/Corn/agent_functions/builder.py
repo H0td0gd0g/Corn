@@ -115,7 +115,7 @@ class CornAgent(PayloadType):
             f.write(content)
             f.truncate()
         command = "make -C {} exe".format(agent_build_path.name+"/")
-        filename = agent_build_path.name + "/Corn/build/Corn.exe"
+        filename = agent_build_path.name + "/build/Corn.exe"
         proc = await asyncio.create_subprocess_shell(command, stdout=asyncio.subprocess.PIPE,stderr=asyncio.subprocess.PIPE)
 
         stdout, stderr = await proc.communicate()
