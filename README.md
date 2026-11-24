@@ -87,7 +87,6 @@ The following arg block repeats `argCount` times:
 
 ## Notice
 
-- All code in this repository is written by hand. No AI-generated code.
 - Open to opportunities in penetration testing, red teaming, and red team tool development.
 - Looking for a CTF team to join.
 

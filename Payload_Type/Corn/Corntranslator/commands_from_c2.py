@@ -33,7 +33,7 @@ def responseGetTasking(tasks: dict):
         for key, val in param_obj.items():
             val_bytes = str(val).encode()
             val_len = len(val_bytes)
-            data += val_len.to_bytes(4, "big")
+            data += val_len.to_bytes(4, "little")
             data += val_bytes
     
     return data

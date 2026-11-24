@@ -33,6 +33,6 @@ class Corntranslator(TranslationContainer):
     async def translate_from_c2_format(self, inputMsg: TrCustomMessageToMythicC2FormatMessage) -> TrCustomMessageToMythicC2FormatMessageResponse:
         response = TrCustomMessageToMythicC2FormatMessageResponse(Success=True)
         print("Agent --> C2 :" + binascii.hexlify(inputMsg.Message).decode('cp850'))
-        data = inputMsg.Message
+        data = base64.b64decode(inputMsg.Message)
         response.Message = dispatchAction(data)
         return response
