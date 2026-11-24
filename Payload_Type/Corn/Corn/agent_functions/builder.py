@@ -48,6 +48,7 @@ class CornAgent(PayloadType):
         config = {
             "payload_uuid": self.uuid,
             "callback_host": "",
+            "callback_interval": 10,
             "USER_AGENT": "",
             "httpMethod": "POST",
             "post_uri": "",
