@@ -18,12 +18,10 @@ PCmdResult executeShell(
     PROCESS_INFORMATION pi = { 0 };
 
     char cmdline[512];
-    for (BYTE i = 0; i < cmd->argCount; i++) {
-    if (cmd->commandType[i] == TYPE_COMMAND_ARGS) {
-        snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", (PCHAR)cmd->args[i]);
-        break;
-        }
-    }
+
+    // execute_shell function accepts only one argument.
+    snprintf(cmdline, sizeof(cmdline), "cmd.exe /c %s", (PCHAR)cmd->args[0]);
+
 
 
     BOOL success;
