@@ -1,12 +1,21 @@
 # Corn Agent
 
-> ⚠️ **Work in Progress** — currently under active development.
+<p align="center">
+  <img src="Payload_Type/Corn/Corn/agent_functions/CornAgent.svg" width="150" alt="Corn">
+</p>
 
 A Windows x64 Mythic C2 agent written in C.
 
 ## Overview
 
 Corn is a lightweight implant for the [Mythic C2 framework](https://github.com/its-a-feature/Mythic). It communicates with the Mythic TeamServer over HTTP POST method using a custom binary protocol.
+
+
+## install
+
+```
+./mythic-cli install github https://github.com/H0td0gd0g/Corn
+```
 
 ## Binary Protocol
 
@@ -95,7 +104,6 @@ The following arg block repeats `argCount` times:
 This project was inspired by and built with reference to the following:
 
 - [ceos](https://github.com/Red-Team-SNCF/ceos)
-- [Xenon](https://github.com/MythicAgents/Xenon)
 
 ## Disclaimer
 

@@ -35,7 +35,7 @@ class CornAgent(PayloadType):
     ]
     agent_path = pathlib.Path(".") / "Corn"
     agent_code_path = agent_path / "agent_code"
-    agent_icon_path = agent_path / "agent_functions" / "corn.png"
+    agent_icon_path = agent_path / "agent_functions" / "CornAgent.svg"
     
     build_steps = [
         BuildStep("Gathering Files",       "Creating script payload"),
