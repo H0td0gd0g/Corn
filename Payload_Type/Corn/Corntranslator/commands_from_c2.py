@@ -5,8 +5,9 @@ from Corntranslator.config import *
 def dispatchCmd(cmd: str) -> bytes:
     cmd_magic = b""
     match cmd:
-        case execute_shell:
+        case "execute_shell":
             cmd_magic = b"\x54"
+    return cmd_magic
 
 
 def responseCheckin(uuid):
@@ -32,5 +33,7 @@ def responseGetTasking(tasks: dict):
         for key, val in param_obj.items():
             val_bytes = str(val).encode()
             val_len = len(val_bytes)
-            data += val_len
+            data += val_len.to_bytes(4, "big")
             data += val_bytes
+    
+    return data

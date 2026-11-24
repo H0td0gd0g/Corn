@@ -45,7 +45,6 @@ PCommand tlvReadField(PParser parser){
 
         PBYTE args = getByte(parser, &valueSize);
         cmd->args[i] = args;
-        LocalFree(args);
     }
     return cmd;
 }

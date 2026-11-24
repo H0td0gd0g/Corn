@@ -19,7 +19,7 @@ def get_tasking(uuid, data) -> dict:
     
     for i in range(taskCount):
         taskUUID = data[fixedHeader + valuelen + 1 : fixedHeader + valuelen + 1 + 36]
-    
+    # todo ここの処理まだかけてない
     datajson = {
         "action" : "get_tasking",
         "tasking_size" : numTasks
@@ -28,7 +28,7 @@ def get_tasking(uuid, data) -> dict:
     return datajson
 
 def dispatchAction(data) -> dict:
-    uuid = data[:36]
+    uuid = data[:36].decode()
     data = data[36:]
     
     action = data[0]

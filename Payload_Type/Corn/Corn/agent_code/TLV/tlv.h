@@ -10,7 +10,7 @@
 typedef struct
 {
     CHAR commandUUID[36]; // コマンドごとのUUID
-    BYTE commandType[MAX_ARGS]; // コマンドの種類 
+    BYTE commandType; // コマンドの種類 
     BYTE argCount; // コマンドの引数の数
     SIZE_T argsSize[MAX_ARGS];
     PBYTE args[MAX_ARGS];

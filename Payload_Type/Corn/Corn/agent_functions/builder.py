@@ -99,14 +99,15 @@ class CornAgent(PayloadType):
             content = content.replace("%UUID%", config["payload_uuid"])
             content = content.replace("%HOSTNAME%", config["callback_host"])
             content = content.replace("%ENDPOINT%", config["post_uri"])
+            content = content.replace("%PORT%", str(config["callback_port"]))
+            content = content.replace("%SLEEPTIME%", str(config["callback_interval"]))
+            content = content.replace("%USERAGENT%", config["USER_AGENT"])
+            content = content.replace("%METHOD%", config["httpMethod"])
+            content = content.replace("%PROXYURL%", config["proxy_host"])
             if config["ssl"]:
                 content = content.replace("%SSL%", "TRUE")
             else:
                 content = content.replace("%SSL%", "FALSE")
-                content = content.replace("%PORT%", str(config["callback_port"]))
-                content = content.replace("%SLEEPTIME%", str(config["callback_interval"]))
-                content = content.replace("%USERAGENT%", config["USER_AGENT"])
-                content = content.replace("%PROXYURL%", config["proxy_host"])
             if config["proxyEnabled"]:
                 content = content.replace("%PROXYENABLED%", "TRUE")
             else:

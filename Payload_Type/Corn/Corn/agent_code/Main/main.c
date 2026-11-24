@@ -60,7 +60,10 @@ int main(void){
           addByte(prevResults, taskCount);
           }
         // 実行結果を追加
-        tlvWriteField(prevResults, result);
+        if (result != NULL){
+          tlvWriteField(prevResults, result);
+        }
+        
 
         freeCommand(cmd);
         freeCmdResult(result);

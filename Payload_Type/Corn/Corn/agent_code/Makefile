@@ -1,4 +1,4 @@
-TARGET_EXEC := corn.exe
+TARGET_EXEC := Corn.exe
 
 CC := x86_64-w64-mingw32-gcc
 BUILD_DIR := ./build
@@ -12,7 +12,7 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS := $(INC_FLAGS) -MMD -MP
+CPPFLAGS := $(INC_FLAGS) -MMD -MP -DHTTP_TRANSPORT
 LDFLAGS := -lwinhttp
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
@@ -23,6 +23,7 @@ $(BUILD_DIR)/%.c.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
+exe: $(BUILD_DIR)/$(TARGET_EXEC)
 clean:
 	rm -r $(BUILD_DIR)
 

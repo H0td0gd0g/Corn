@@ -9,7 +9,7 @@ from Corntranslator.config import *
 
 
 class Corntranslator(TranslationContainer):
-    name = "Corntranlater"
+    name = "Corntranslator"
     description = "translater for Corn agent"
     author = "@H0td0gd0g"
 
@@ -32,7 +32,7 @@ class Corntranslator(TranslationContainer):
 
     async def translate_from_c2_format(self, inputMsg: TrCustomMessageToMythicC2FormatMessage) -> TrCustomMessageToMythicC2FormatMessageResponse:
         response = TrCustomMessageToMythicC2FormatMessageResponse(Success=True)
-        print("Agent --> C2 :" + + binascii.hexlify(inputMsg.Message).decode('cp850'))
+        print("Agent --> C2 :" + binascii.hexlify(inputMsg.Message).decode('cp850'))
         data = inputMsg.Message
-        response = dispatchAction(data)
+        response.Message = dispatchAction(data)
         return response
