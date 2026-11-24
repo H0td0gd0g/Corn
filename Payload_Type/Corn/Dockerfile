@@ -20,3 +20,7 @@ RUN apt-get -y update && \
 
 COPY requirements.txt /
 RUN pip3 install -r /requirements.txt
+
+WORKDIR /Mythic/
+
+CMD [ "python3", "main.py" ]
