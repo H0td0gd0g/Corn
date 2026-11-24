@@ -93,7 +93,7 @@ class CornAgent(PayloadType):
             StepStdout="All configuration setting applied",
             StepSuccess=True
         ))
-        with open(agent_build_path.name+"/ceos/include/Config.h", "r+") as f:
+        with open(agent_build_path.name+"/Corn/include/Config.h", "r+") as f:
             content = f.read()
             content = content.replace("%UUID%", config["payload_uuid"])
             content = content.replace("%HOSTNAME%", config["callback_host"])
