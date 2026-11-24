@@ -1,5 +1,4 @@
 import json
-import base64
 import binascii
 
 from mythic_container.TranslationBase import *
@@ -32,7 +31,10 @@ class Corntranslator(TranslationContainer):
 
     async def translate_from_c2_format(self, inputMsg: TrCustomMessageToMythicC2FormatMessage) -> TrCustomMessageToMythicC2FormatMessageResponse:
         response = TrCustomMessageToMythicC2FormatMessageResponse(Success=True)
-        print("Agent --> C2 :" + binascii.hexlify(inputMsg.Message).decode('cp850'))
-        data = base64.b64decode(inputMsg.Message)
-        response.Message = dispatchAction(data)
+        print("Agent --> C2 :" + binascii.hexlify(inputMsg.Message).decode('utf-8'))
+        # Mythic already base64-decodes the HTTP body and strips the UUID before calling us.
+        # inputMsg.Message = raw bytes starting at the action byte
+        # inputMsg.UUID    = the agent UUID extracted by Mythic
+        data = inputMsg.Message
+        response.Message = dispatchAction(data, inputMsg.UUID)
         return response

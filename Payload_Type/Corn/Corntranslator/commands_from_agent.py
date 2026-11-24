@@ -36,12 +36,10 @@ def get_tasking(uuid, data) -> dict:
     
     return datajson
 
-def dispatchAction(data) -> dict:
-    uuid = data[:36].decode()
-    data = data[36:]
-    
+def dispatchAction(data, uuid) -> dict:
+    # Mythic strips the UUID before calling the translator, so data[0] is the action byte.
     action = data[0]
-    
+
     match action:
         case 0x01:
             datajson = checkin(uuid, data)
