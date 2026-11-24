@@ -14,7 +14,7 @@ class CornAgent(PayloadType):
     name = "Corn"
     file_extension = "exe"
     author = "@H0td0gd0g"
-    supported_os = [SupportedOS]
+    supported_os = [SupportedOS.Windows]
     wrapper = False
     supports_dynamic_loading = False
     
